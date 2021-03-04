@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "backend.fullname" . }}-migrations
+  labels:
+    app: {{ include "backend.name" . }}-migrations
+    chart: {{ include "backend.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") $ | sha256sum }}
+      labels:
+        app: {{ include "backend.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ $.Chart.Name }}-migrations
+          image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          command: ['npm', 'run', 'postinstall']
+          env:
+          - name: SENTRY_COMPONENT
+            value: migration
+          envFrom:
+          - configMapRef:
+              name: {{ template "backend.fullname" $ }}-config
+          - secretRef:
+              name: {{ template "backend.fullname" $ }}-secrets

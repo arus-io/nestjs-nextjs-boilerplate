@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Company {
+  id: Int!
+  logo: String
+  name: String!
+  subdomain: String!
+  supportEmail: String
+  twoFactorEnabled: Boolean!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type GlobalSearchResult {
+  entity: String!
+  id: String!
+  label: String!
+}
+
+type Message {
+  body: String!
+  code: String!
+  error: String
+  from: String!
+  id: Int!
+  initiator: User
+  medium: String!
+  receiver: User
+  sentDate: DateTime!
+  subject: String!
+  to: String!
+}
+
+type Query {
+  companies: [Company!]!
+  companyUsers: [User!]!
+  globalSearch(query: String!): [GlobalSearchResult!]!
+  me: User!
+  messages: [Message!]!
+}
+
+type User {
+  company: Company!
+  email: String!
+  firstName: String!
+  id: Int!
+  lastName: String!
+  phone: String
+}

@@ -1,0 +1,51 @@
+replicaCount: 2
+
+image:
+  repository: 123456.dkr.ecr.us-west-2.amazonaws.com/test #@TODO: move to var
+  tag: prod
+
+config:
+  envName: "prod"
+  s3Bucket: "backend-prod" #@TODO: move to var
+  s3Region: "us-west-2"
+  s3AccessKey: "123456" #@TODO: move to var
+  smsClient: 'twilio'
+  twilioAccountSid: ''
+  emailSupport: "Backend Support <test@backend.com>" #@TODO: move to var
+  emailFrom: "Backend <test@backend.com>" #@TODO: move to var
+  siteDomain: "backend.com" #@TODO: move to var
+  sentryEnvironment: "prod"
+  adminTwoFactor: "true"
+
+secrets:
+  databaseUrl: "postgres://test:pass@dbX.us-west-2.rds.amazonaws.com:5432/test" #@TODO: move to var
+  sendgridApiKey: ""
+  s3SecretKey: ""
+  secretToken: ""
+  twilioAuthToken: ""
+
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 1Gi
+
+
+ingress:
+  enabled: true
+  hosts:
+  - "*.domain.com" #@TODO: move to var
+  path: /*
+  annotations:
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-west-2:1234556:certificate/abc #@TODO: move to var
+    alb.ingress.kubernetes.io/healthcheck-path: /health
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    #alb.ingress.kubernetes.io/security-groups: sg-03b99f53927bb0443
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
+    alb.ingress.kubernetes.io/tags: Environment=prod,Project=Arus,Name=backend #@TODO: move to var
+    alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=14400
+    # the next attributes are required for soc2 - but I had to apply them manually (on an existing ingress)
+    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true,access_logs.s3.enabled=true,access_logs.s3.bucket=eks-ingress-access-log,deletion_protection.enabled=true
+    kubernetes.io/ingress.class: alb

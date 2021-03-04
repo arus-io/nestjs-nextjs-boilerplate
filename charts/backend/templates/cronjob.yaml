@@ -1,0 +1,42 @@
+{{- range .Values.jobs }}
+---
+apiVersion: batch/v1beta1
+kind:  CronJob
+metadata:
+  name: {{ include "backend.fullname" $ }}-{{ .name }}
+  labels:
+    app: {{ include "backend.name" $ }}-{{ .name }}
+    chart: {{ include "backend.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+spec:
+  schedule: {{ .schedule | quote }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 200
+  jobTemplate:
+    metadata:
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") $ | sha256sum }}
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: {{ $.Chart.Name }}
+              image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag }}"
+              imagePullPolicy: {{ $.Values.image.pullPolicy }}
+              command:
+              {{- range .command }}
+                - {{ . }}
+              {{- end }}
+              env:
+              - name: SENTRY_COMPONENT
+                value: {{ .name }}
+              envFrom:
+              - configMapRef:
+                  name: {{ template "backend.fullname" $ }}-config
+              - secretRef:
+                  name: {{ template "backend.fullname" $ }}-secrets
+{{- end }}

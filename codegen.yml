@@ -1,0 +1,10 @@
+overwrite: true
+schema: "./server/schema.gql"
+documents: "./client/**/*.gql.ts"
+generates:
+  client/_gen/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations" # try to enable when we have .graphql files with queries/mutations
+      - "typescript-react-apollo"
+#      - "typescript-graphql-files-modules" # Generate declare module for .graphql files

@@ -1,0 +1,76 @@
+# Default values for backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ""
+  pullPolicy: Always
+
+nameOverride: backend
+fullnameOverride: backend
+
+service:
+  type: NodePort
+  port: 3000
+
+redisService:
+  type: ClusterIP
+  port: 6379
+
+config:
+  serverPort: 3000
+  envName: none
+  s3Bucket: ""
+  s3Region: ""
+  s3AccessKey: ""
+  emailSupport: ""
+  emailFrom: ""
+  emailWhitelist: ""
+  siteDomain: ""
+  smsClient: none
+  twilioAccountSid: ""
+  docsClient: "gdrive"
+  gdriveOutputFolder: ""
+  sentryServerDsn: "https://bcc8ddb3a97b42d59dcb3d15e81ddaf5@o448546.ingest.sentry.io/5430058"
+  sentryEnvironment: ""
+  adminTwoFactor: "false"
+
+secrets:
+  databaseUrl: ""
+  sendgridApiKey: ""
+  s3SecretKey: ""
+  secretToken: ""
+  redisUrl: "redis://backend-redis:6379"
+  twilioAuthToken: ""
+
+ingress:
+  enabled: false
+  annotations: {}
+  path: /*
+  hosts: []
+  tls:
+
+probes:
+  liveness:
+    enabled: true
+    path: /health
+    port: express
+  readiness:
+    enabled: true
+    path: /health
+    port: express
+
+jobs:
+  - name: send-notifications
+    schedule: '30 8 * * *'
+    command: ['node', 'dist/server/entryPointTasks', 'sendNotifications']
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

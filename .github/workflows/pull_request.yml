@@ -1,0 +1,70 @@
+name: Pull Request
+on:
+  push:
+    branches-ignore:
+      - develop
+
+jobs:
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+      - uses: harmon758/postgresql-action@v1
+        with:
+          postgresql version: '11'
+          postgresql db: test
+          postgresql user: test
+          postgresql password: test
+      - uses: zhulik/redis-action@v1.0.0
+      - run: yarn
+        if: |
+          steps.cache-node-modules.outputs.cache-hit != 'true'
+      - name: Yarn Test
+        run: yarn test:ci
+        env:
+          CI: true
+          DATABASE_URL: postgres://test:test@localhost:5432/test
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.node-version }}-nodemodules-
+      - name: Cache nextjs
+        uses: actions/cache@v2
+        with:
+          path: client/.next/cache
+          key: ${{ runner.os }}-client-nextjs-${{ hashFiles('**/yarn.lock') }}
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+      - run: yarn
+        if: |
+          steps.cache-node-modules.outputs.cache-hit != 'true'
+      - name: Yarn Build
+        run: yarn build
+        env:
+          CI: true

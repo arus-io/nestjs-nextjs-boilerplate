@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend.name" . }}-redis
+  labels:
+    app: {{ include "backend.name" . }}-redis
+    chart: {{ include "backend.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "backend.name" . }}-redis
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      annotations:
+        checksum/configmap: {{ include (print .Template.BasePath "/redis-configmap.yaml") . | sha256sum }}
+      labels:
+        app: {{ include "backend.name" . }}-redis
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: redis
+          image: redis:5.0.5-alpine
+        #   imagePullPolicy: Always
+          command: [ "redis-server" ]
+          args: [ "/usr/local/etc/redis/redis.conf" ]
+          livenessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            tcpSocket:
+              port: redis
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /usr/local/etc/redis
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      volumes:
+        - name: config-volume
+          configMap:
+            name: {{ include "backend.name" . }}-redis

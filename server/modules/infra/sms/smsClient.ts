@@ -5,5 +5,5 @@ export interface SmsParameters {
 }
 
 export abstract class SmsClient {
-  public abstract async sendMessage(params: SmsParameters): Promise<void>;
+  public abstract sendMessage(params: SmsParameters): Promise<void>;
 }

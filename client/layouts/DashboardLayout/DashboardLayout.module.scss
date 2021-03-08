@@ -1,0 +1,22 @@
+.content {
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 24px 0 24px;
+
+  &.full {
+    max-width: 100%;
+  }
+  &.medium {
+    max-width: 1008px;
+  }
+  &.small {
+    max-width: 648px;
+  }
+}
+
+.fullContent {
+  padding: 0 !important;
+  min-height: calc(100vh - 65px);
+  display: flex;
+  flex-direction: column;
+}

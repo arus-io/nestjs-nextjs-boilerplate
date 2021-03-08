@@ -1,0 +1,10 @@
+@import '../../constants/colors.scss';
+
+.error {
+  color: $accentDark;
+  width: 100%;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 8px;
+}

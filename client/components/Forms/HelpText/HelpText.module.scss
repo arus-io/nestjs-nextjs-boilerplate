@@ -1,0 +1,16 @@
+@import '../../../constants/colors.scss';
+
+.helpTextWrapper {
+  margin: 8px 0px;
+}
+
+.helpText {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 21px;
+  color: $lightText;
+
+  a {
+    color: $lightText;
+  }
+}

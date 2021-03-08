@@ -1,0 +1,32 @@
+.action {
+  margin-left: 16px;
+
+  &.danger {
+    margin-right: auto;
+    margin-left: 0;
+  }
+}
+
+.row {
+  width: 100%;
+  display: flex;
+
+  .input {
+    margin-right: 24px;
+    width: 100%;
+
+    &.no_margin {
+      margin-right: 0;
+    }
+    &.half {
+      input {
+        width: calc(50% - 12px);
+      }
+    }
+    &.three_fourths {
+      input {
+        width: 75%;
+      }
+    }
+  }
+}

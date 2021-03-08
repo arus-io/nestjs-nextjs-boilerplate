@@ -1,0 +1,13 @@
+@import '../../../constants/colors.scss';
+
+.descriptionTextWrapper {
+  background: #f9f9f9;
+  border-left: 10px solid $primary;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.descriptionText {
+  margin-bottom: 8px;
+  font-size: 14px;
+}

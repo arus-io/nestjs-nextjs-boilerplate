@@ -1,0 +1,39 @@
+@import '../constants/colors.scss';
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Nunito', sans-serif;
+  overflow-y: visible;
+  height: 100%;
+  color: $text;
+  background-color: #fff;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: 'Nunito', sans-serif;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+}
+
+hr {
+  border-top: 1px solid $primary;
+  border-bottom: 0;
+  margin: 24px 0;
+}
+
+.grabbing {
+  cursor: grabbing;
+}

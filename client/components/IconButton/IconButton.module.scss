@@ -1,0 +1,96 @@
+@import '../../constants/colors.scss';
+
+@mixin setBgColor($bg) {
+  color: $bg;
+  svg {
+    fill: $bg;
+  }
+  &:hover {
+    color: fade($bg, 80%);
+    svg {
+      fill: fade($bg, 80%);
+    }
+  }
+  &.disabled {
+    color: $bg;
+    svg {
+      fill: $bg;
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  background: transparent;
+  border: 0;
+
+  .content {
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  &.noChildren {
+    svg {
+      margin: 0 !important;
+    }
+  }
+
+  &.left {
+    flex-direction: row-reverse;
+    svg {
+      margin-right: 8px;
+    }
+  }
+
+  &.right {
+    flex-direction: row;
+    svg {
+      margin-left: 8px;
+    }
+  }
+
+  @include setBgColor($light);
+
+  &:active:not(.disabled) {
+    top: 1px;
+    position: relative;
+  }
+  &.disabled {
+    cursor: default;
+  }
+  &.primary {
+    @include setBgColor($primary);
+  }
+  &.secondary {
+    @include setBgColor($secondary);
+  }
+  &.accentLight {
+    @include setBgColor($accentLight);
+  }
+  &.accentDark {
+    @include setBgColor($accentDark);
+  }
+  &.lightBlue {
+    @include setBgColor($lightBlue);
+  }
+  &.lightYellow {
+    @include setBgColor($lightYellow);
+  }
+  &.lightRed {
+    @include setBgColor($lightRed);
+  }
+  &.dark {
+    @include setBgColor($dark);
+  }
+  &.light {
+    @include setBgColor($light);
+  }
+  &.text {
+    @include setBgColor($text);
+  }
+}

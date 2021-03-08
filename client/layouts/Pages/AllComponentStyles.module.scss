@@ -1,0 +1,34 @@
+@import '../../constants/colors';
+// @TODO: this is not meant to be for all components, but we don't need 1 per file either
+.backButton {
+  margin-bottom: 16px;
+}
+
+.header {
+  display: flex;
+  margin-bottom: 24px;
+  justify-content: space-between;
+  width: 100%;
+  .titleContainer {
+    display: flex;
+    align-items: center;
+
+    .title {
+      margin-top: 0;
+      margin-bottom: 24px;
+      margin-right: 8px;
+      color: $textGrey;
+      font-size: 32px;
+      font-weight: bold;
+      line-height: 34px;
+    }
+  }
+
+  .btnsContainer {
+    display: flex;
+    & > * {
+      margin-left: 16px;
+      height: 40px;
+    }
+  }
+}

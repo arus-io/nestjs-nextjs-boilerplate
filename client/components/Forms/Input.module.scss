@@ -1,0 +1,33 @@
+@import '../../constants/colors.scss';
+
+.input {
+  margin-bottom: 24px;
+
+  &.disabled {
+    color: $text;
+  }
+}
+
+.info {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+  line-height: 21px;
+
+  &.error {
+    color: $accentDark;
+  }
+
+  &.help {
+    color: $lightText;
+
+    a {
+      color: $lightText;
+    }
+  }
+}
+
+.inputLabel {
+  display: flex;
+  justify-content: space-between;
+}

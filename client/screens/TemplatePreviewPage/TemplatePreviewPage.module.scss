@@ -1,0 +1,65 @@
+@import '../../constants/colors';
+
+.header {
+  margin-bottom: 32px;
+}
+.headerResource {
+  background-image: none;
+  background-color: initial;
+  padding: 24px 0 0;
+}
+.headerBottom {
+  background-color: initial;
+  height: 140px;
+  background-position: 0 100%;
+  margin-top: auto;
+}
+.strech {
+  display: flex;
+  justify-content: space-between;
+}
+.media {
+  display: flex;
+  align-items: flex-start;
+  .titleWrap {
+    h1 {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 34px;
+      margin: 0 0 24px 0;
+    }
+  }
+}
+
+.content {
+  max-width: 648px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 1.35em;
+  }
+}
+.section {
+  margin-bottom: 32px;
+}
+
+.description,
+.file,
+.video,
+.image {
+  margin-bottom: 24px;
+}
+
+.video,
+.image {
+  img,
+  div {
+    max-width: 100%;
+  }
+}

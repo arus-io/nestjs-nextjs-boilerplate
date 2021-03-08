@@ -1,0 +1,64 @@
+@import '../../constants/colors';
+
+@mixin setSize($size) {
+  width: $size;
+  height: $size;
+  &:before,
+  &:after {
+    border-left-width: $size * 0.26;
+    margin-left: $size * -0.13;
+  }
+  &:before {
+    height: $size * 0.26;
+  }
+  &:after {
+    height: $size * 0.63;
+    border-radius: $size * 0.07;
+  }
+}
+
+.container {
+  display: inline-block;
+  position: relative;
+  animation: loading-adjust-hue 1.2s infinite;
+  &:before,
+  &:after {
+    position: absolute;
+    display: block;
+    content: ' ';
+    width: 0;
+    border-left-style: solid;
+    left: 50%;
+  }
+  &:before {
+    top: 0%;
+    border-radius: 100%;
+  }
+  &:after {
+    bottom: 0%;
+  }
+  @include setSize(20px);
+  &.small {
+    @include setSize(14px);
+  }
+  &.large {
+    @include setSize(40px);
+  }
+  &.white:after,
+  &.white:before {
+    background: white;
+  }
+}
+@keyframes loading-adjust-hue {
+  0% {
+    transform: rotate(45deg);
+    animation-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  }
+  50% {
+    transform: rotate(900deg);
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+  }
+  100% {
+    transform: rotate(1845deg);
+  }
+}

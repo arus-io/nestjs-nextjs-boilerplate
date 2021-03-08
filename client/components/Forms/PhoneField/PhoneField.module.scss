@@ -1,0 +1,35 @@
+@import '../../../constants/colors';
+
+.wrap {
+  margin-bottom: 24px;
+  &.disabled {
+    opacity: 0.5;
+    cursor: default;
+    pointer-events: none;
+  }
+}
+.info {
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 21px;
+  margin-top: 8px;
+  line-height: 21px;
+  &.error {
+    color: $accentDark;
+  }
+  &.help {
+    color: $lightText;
+  }
+}
+.field {
+  position: relative;
+  .icon {
+    position: absolute;
+    top: 15px;
+    left: 11px;
+  }
+
+  .input {
+    padding-left: 40px;
+  }
+}

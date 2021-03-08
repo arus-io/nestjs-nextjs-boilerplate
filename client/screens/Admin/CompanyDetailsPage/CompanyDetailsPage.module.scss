@@ -1,0 +1,41 @@
+@import '../../../constants/colors.scss';
+
+.backButton {
+  margin-bottom: 16px;
+}
+
+.btnsContainer {
+  display: flex;
+}
+
+.actions {
+  display: flex;
+  padding-right: 16px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.name {
+  color: $text;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.policyLink {
+  float: right;
+  margin-bottom: 36px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.needsReviewCell {
+  color: $accentDark;
+}
+
+.headerFilters {
+  width: 100%;
+}

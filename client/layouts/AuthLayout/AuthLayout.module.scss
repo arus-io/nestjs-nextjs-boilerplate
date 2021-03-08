@@ -1,0 +1,35 @@
+@import '../../constants/colors';
+
+.header {
+  height: 65px;
+  width: 100%;
+  padding: 0 40px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 32px;
+}
+.container {
+  padding-bottom: 32px;
+  background: $background;
+  min-height: 100vh;
+  height: 100%;
+}
+.footer {
+  padding-top: 20px;
+  margin: auto;
+  text-align: center;
+  width: 200px;
+}
+.boxContainer {
+  max-width: 480px;
+  padding: 40px;
+  margin: 0 auto;
+
+  h1 {
+    margin: 0 0 24px 0;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 34px;
+  }
+}

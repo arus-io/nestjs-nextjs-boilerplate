@@ -1,0 +1,200 @@
+@import '../../constants/colors';
+
+$drawerWidth: 72px;
+$drawerWidthOpen: 274px;
+$pageBgColor: #fff;
+$preferredBorderRadius: 40px;
+
+.page {
+  background-color: $backgroundGrey;
+  overflow-x: hidden;
+}
+
+.pageNavigation {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  top: 0;
+  background-color: transparent;
+  width: $drawerWidth;
+  padding: 24px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: width 400ms ease-in-out;
+  overflow: hidden;
+
+  &.open {
+    width: $drawerWidthOpen;
+  }
+}
+
+.navigationContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .menuContainer {
+    cursor: pointer;
+    height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .collapsedIcon {
+    height: 34px;
+  }
+}
+
+.navItemsContainer {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.navItemContainer {
+  cursor: pointer;
+  margin-left: 10%;
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+.navItemLabel {
+  margin-top: 2px;
+  padding-left: 8px;
+  color: $textGrey;
+  font-weight: normal;
+}
+
+.activeNavItem {
+  background-color: $pageBgColor;
+  border-top-left-radius: $preferredBorderRadius;
+  border-bottom-left-radius: $preferredBorderRadius;
+
+  .navItemLabel {
+    color: $selectedPrimary;
+  }
+
+  svg {
+    stroke: $accentLight;
+  }
+}
+
+.logoutButton {
+  padding: 12px 16px;
+  margin-bottom: 24px;
+
+  .navItemLabel {
+    color: $textGrey;
+  }
+}
+
+.pageContentWrapper {
+  background-color: $pageBgColor;
+  margin-left: $drawerWidth;
+  border-top-left-radius: $preferredBorderRadius;
+  border-bottom-left-radius: $preferredBorderRadius;
+  padding: 24px 48px;
+  transition: margin-left 400ms ease-in-out;
+
+  &.drawerOpen {
+    margin-left: $drawerWidthOpen;
+  }
+}
+
+.pageContent {
+  width: 100%;
+  // Keep in sync with pageContentWrapper paddings to avoid overflow
+  min-height: calc(100vh - 48px);
+}
+
+.pageHeader {
+  padding-bottom: 24px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid $dividerColor;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .searchBar {
+    display: flex;
+    align-items: center;
+    width: 400px;
+  }
+  .userSection {
+    display: flex;
+    align-items: center;
+  }
+
+  .userSettingsContainer {
+    margin-left: 32px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .userIcon {
+    height: 48px;
+    width: auto;
+    border-radius: 50%;
+  }
+
+  .userInfoContainer {
+    margin-left: 24px;
+    color: $textGrey;
+    z-index: 2;
+  }
+
+  .userNameLabel {
+    color: $textGrey;
+    font-size: 18px;
+    line-height: 24px;
+    margin: 4px 0px;
+  }
+
+  .userEmailLabel {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .settingsLink {
+    display: flex;
+    align-items: center;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  .ovalBackground {
+    position: absolute;
+    width: 58px;
+    height: 40px;
+    background: $accentGreen;
+    border-radius: 29px/20px;
+    z-index: -1;
+    top: 16px;
+    left: -4px;
+    transform: rotateY(0deg) rotate(-8deg);
+  }
+}
+
+@media print {
+  .pageNavigation,
+  .pageHeader {
+    display: none;
+  }
+
+  .pageContentWrapper {
+    width: 100%;
+    margin-left: 0px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+
+    &.drawerOpen {
+      margin-left: 0px;
+    }
+  }
+}

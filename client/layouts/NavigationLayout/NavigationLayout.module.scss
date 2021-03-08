@@ -1,0 +1,54 @@
+@import '../../constants/colors.scss';
+
+$mobileWidth: 670px;
+
+.headerWrap {
+  width: 100%;
+  border-bottom: 1px solid $light;
+  align-items: center;
+  padding: 0 24px;
+
+  @media screen and (max-width: $mobileWidth) {
+    padding: 0 16px;
+  }
+}
+
+.logoWrap {
+  display: flex;
+}
+
+.headerContent {
+  height: 65px;
+  display: flex;
+  margin: 0 auto;
+  max-width: 1280px;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    max-height: 40px;
+    width: auto;
+    max-width: 100%;
+    margin-right: 12px;
+  }
+
+  @media screen and (max-width: $mobileWidth) {
+    height: 57px;
+
+    .logo {
+      max-height: 32px;
+    }
+  }
+}
+
+.bannerContainer {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $lightBlue;
+}
+
+.bannerText {
+  font-weight: bold;
+}

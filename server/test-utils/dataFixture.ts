@@ -3,12 +3,9 @@ import { Connection, DeepPartial, ObjectType } from 'typeorm';
 
 import { RedisService } from '../modules/infra/cache/redis.service';
 import { Company } from '../modules/company/models/company.entity';
-import { Leave } from '../modules/leave/models/leave.entity';
-import { TaskTemplate, UserRole } from '../modules/task/models/taskTemplate.entity';
 import { AuthUtils } from '../modules/user/lib/authUtils';
 import { User } from '../modules/user/models/user.entity';
 import { UserAccess } from '../modules/user/models/useraccess.entity';
-import { getEmployeeLeaveData, getHrLeaveData } from './fixtures';
 
 export class DataFixture {
   private connection: Connection;

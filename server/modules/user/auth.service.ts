@@ -274,7 +274,7 @@ export class AuthService {
         .addSelect('ua.userId');
     }
     const user: User = await userQ.where(where[0], where[1]).getOne();
-    return { user, company: user.company };
+    return { user, company: user?.company };
   }
 
   public async grantAccessToken(c: AccessToken, expiresInSec): Promise<string> {

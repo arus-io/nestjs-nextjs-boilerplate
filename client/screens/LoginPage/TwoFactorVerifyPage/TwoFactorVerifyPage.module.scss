@@ -1,0 +1,17 @@
+@import '../../../constants/colors.scss';
+
+.verifyCodeContent {
+  text-align: center;
+}
+
+.resendButton {
+  min-width: 90px;
+  margin-left: 12px;
+  padding: 0px 16px;
+}
+
+.divider {
+  width: 75%;
+  margin: 24px auto;
+  border-top-color: $light;
+}

@@ -1,0 +1,116 @@
+@import '../../constants/colors';
+
+@mixin setBgColor($bg, $textColor) {
+  background: $bg;
+  color: $textColor;
+  &:hover {
+    background: fade($bg, 80%);
+  }
+  &.disabled {
+    background: desaturate($bg, 80%);
+  }
+  .icon {
+    fill: currentColor;
+  }
+  // When plain button is set use color prop for text
+  &.plain {
+    background: transparent;
+    color: $bg;
+    &:hover {
+      color: fade($bg, 80%);
+    }
+    &.disabled {
+      color: desaturate($bg, 80%);
+    }
+  }
+}
+
+.button {
+  cursor: pointer;
+  position: relative;
+  padding: 0 32px;
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+
+  display: inline-block;
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .icon {
+    margin-right: 7px;
+  }
+  @include setBgColor($light, $text);
+
+  &.haveIcon {
+    padding: 0 24px;
+  }
+  &.plain {
+    padding: 0;
+  }
+  &:active:not(.disabled) {
+    &:not(.plain) {
+      box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+    }
+    top: 1px;
+    position: relative;
+  }
+  .loadingWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &.disabled,
+  &.loading {
+    cursor: default;
+  }
+  @media print {
+    display: none;
+  }
+  &.primary {
+    @include setBgColor($primary, #fff);
+  }
+  &.secondary {
+    @include setBgColor($secondary, #fff);
+  }
+  &.accentLight {
+    @include setBgColor($accentLight, #fff);
+  }
+  &.accentDark {
+    @include setBgColor($accentDark, #fff);
+  }
+  &.lightBlue {
+    @include setBgColor($lightBlue, $text);
+  }
+  &.lightYellow {
+    @include setBgColor($lightYellow, $text);
+  }
+  &.lightRed {
+    @include setBgColor($lightRed, $accentDark);
+  }
+  &.dark {
+    @include setBgColor($dark, $text);
+  }
+  &.light {
+    @include setBgColor($light, $text);
+  }
+  &.lightGreen {
+    @include setBgColor($lightGreen, $text);
+  }
+  &.accentGreen {
+    @include setBgColor($accentGreen, $text);
+  }
+}

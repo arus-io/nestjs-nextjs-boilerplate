@@ -1,0 +1,81 @@
+@import '../../../../constants/colors.scss';
+
+$minButtonWidth: 208px;
+
+.contentWrapper {
+  min-height: 300px;
+}
+
+.introText {
+  margin-bottom: 54px;
+}
+
+.divider {
+  width: 75%;
+  margin: 24px auto;
+  border-top-color: $light;
+}
+
+.button {
+  min-width: $minButtonWidth;
+}
+
+.buttonsWrapper {
+  text-align: center;
+}
+
+.totpContent {
+  text-align: center;
+}
+
+.qrCode {
+  width: 50%;
+  height: auto;
+}
+
+.qrCopyURLContent {
+  display: flex;
+  align-items: center;
+}
+
+.copyIconContainer {
+  cursor: pointer;
+  margin-left: 12px;
+}
+
+input.codeInput {
+  text-align: center;
+  min-width: $minButtonWidth;
+  width: 50%;
+  margin-bottom: 24px;
+
+  /* Chrome, Safari, Edge, Opera */
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  &[type='number'] {
+    -moz-appearance: textfield;
+  }
+}
+
+.smsVerificationToken {
+  text-align: center;
+}
+
+.phoneInput {
+  text-align: center;
+  min-width: $minButtonWidth;
+  width: 50%;
+  margin: 24px auto;
+  display: block;
+}
+
+.resendButton {
+  min-width: 90px;
+  margin-left: 12px;
+  padding: 0px 16px;
+}

@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 24px auto 16px;
+  max-width: 1008px;
+
+  h2 {
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 30px;
+    margin: 0 24px;
+  }
+}

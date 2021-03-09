@@ -19,8 +19,7 @@ export class UserResolver {
   @Query((returns) => User)
   @Protected()
   async me(@CurrentUser() user, @Info() info) {
-    // One user may have access to several companies, but we want to show only the context of the existing session
-    return this.userService.findOne(user.id, user.companyId);
+    return this.userService.findOne(user.id);
   }
 
 }

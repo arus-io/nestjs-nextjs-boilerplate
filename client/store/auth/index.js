@@ -21,7 +21,7 @@ export const roleReducer = (state = null, action) => {
 export const meReducer = (state = null, action) => {
   switch (action.type) {
     case actionKey.success(GET_ME):
-      return action.payload.user;
+      return action.payload;
     case actionKey.success(EDIT_USER_SETTINGS):
       return {
         ...state,
@@ -105,7 +105,7 @@ export function* rootSaga() {
 export function* getMe({ type, reject, resolve }) {
   yield call(request, {
     type,
-    url: '/api/auth/me',
+    url: '/v2/auth/me',
     resolve,
     reject,
   });
@@ -114,7 +114,7 @@ export function* getMe({ type, reject, resolve }) {
 export function* editUserSettings({ type, payload, resolve, reject }) {
   yield call(request, {
     type,
-    url: '/api/auth/me',
+    url: '/v2/auth/me',
     options: {
       method: 'PUT',
       body: payload,
@@ -128,7 +128,7 @@ export function* editUserSettings({ type, payload, resolve, reject }) {
 export function* dismissNotification({ type, payload, resolve, reject }) {
   yield call(request, {
     type,
-    url: '/api/auth/me/notification',
+    url: '/v2/auth/me/notification',
     options: {
       method: 'POST',
       body: payload,

@@ -71,6 +71,12 @@ export class Initial1614975759702 implements MigrationInterface {
             ALTER TABLE "messages"
             ADD CONSTRAINT "messages_receiverId_fkey" FOREIGN KEY ("receiverId") REFERENCES "users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
         `);
+
+      // Data seed
+      await queryRunner.query(`
+      INSERT INTO users (id, email, password, "firstName", "lastName", superuser, "createdAt", "updatedAt", "deletedAt")
+      VALUES (0, 'admin@mail.com', '$2b$10$7FBJ7IIGZYIi88hM358zkOmG4x5bMsvS6VswZw6uBgDYi646nC1XS', 'User', 'Admin', true, '2021-01-21 15:30:35.719+00', '2021-02-25 14:48:49.67+00')
+        `);
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {

@@ -45,7 +45,7 @@ type Query {
 }
 
 type User {
-  company: Company!
+  company: Company
   email: String!
   firstName: String!
   id: Int!

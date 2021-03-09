@@ -10,13 +10,20 @@ export class CompanyMiddleware implements NestMiddleware {
 
   async use(_req: Request, res: Response, next: NextFunction) {
     const req: { subdomain: string; subdomains: string[]; companyId: number } = _req as any;
+    if (! req.subdomains) {
+    }
     if (!req.subdomain) {
-      // for test, we set subdomain directly. subdomains is a standard field, we cant set it in nest
-      if (!req.subdomains || req.subdomains.length !== 1) {
-        this.logger.log('Request has no subdomains');
-        return res.status(404).end('');
+      const hostParts = _req.headers.host.split('.');
+      if (hostParts.length > 1) {
+        req.subdomain = hostParts[0];
+      } else {
+        // for test, we set subdomain directly. subdomains is a standard field, we cant set it in nest
+        if (!req.subdomains || req.subdomains.length !== 1) {
+          this.logger.log('Request has no subdomains');
+          return res.status(404).end('');
+        }
+        req.subdomain = req.subdomains[0];
       }
-      req.subdomain = req.subdomains[0];
     }
     if (req.subdomain === 'admin') {
       return next();

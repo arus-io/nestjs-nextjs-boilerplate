@@ -74,7 +74,7 @@ export function* handler({
   const { app } = yield select();
   const cacheBust = `${url.indexOf('?') === -1 ? '?' : '&'}_${now}`;
   const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-  const apiDomain = process.env.API_DOMAIN || process.env.SITE_DOMAIN;
+  const apiDomain = process.env.API_DOMAIN || process.env.SITE_DOMAIN || 'localhost:3001';
   const fullUrl = `${protocol}://${app.subdomain}.${apiDomain}${url}${cacheBust}`;
   const headers = {};
   const token = getToken();

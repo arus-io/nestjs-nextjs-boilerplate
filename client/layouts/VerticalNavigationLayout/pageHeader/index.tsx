@@ -25,7 +25,7 @@ const PageHeader = ({ user }: IWithUserProps) => {
           {user ? (
             <div className={styles.userInfoContainer}>
               {/* TODO once we have the same layout, unify settings route */}
-              <NavLink href={user.isHr ? '/hr/settings' : '/settings'}>
+              <NavLink href={'/settings'}>
                 <a className={styles.settingsLink}>
                   <span className={styles.userNameLabel}>{`${user.firstName} ${user.lastName}`}</span>
                   <FeatherIcon name="ChevronRight" size={20} color={colors.lightText} />

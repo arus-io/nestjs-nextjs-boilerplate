@@ -1,0 +1,59 @@
+@import '../../constants/colors';
+
+$mobileBreakpoint: 472px;
+
+.sectionHeader {
+  display: block;
+  width: 100%;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 30px;
+  margin-bottom: 4px;
+  color: #758585;
+}
+
+.p {
+  margin-top: 0px;
+  margin-bottom: 16px;
+}
+
+.row {
+  width: 100%;
+  display: flex;
+
+  @media screen and (max-width: $mobileBreakpoint) {
+    flex-wrap: wrap;
+  }
+
+  .input {
+    width: 50%;
+
+    &:first-child {
+      margin-right: 24px;
+    }
+
+    &:only-child {
+      width: calc(50% - 12px);
+    }
+
+    @media screen and (max-width: $mobileBreakpoint) {
+      width: 100%;
+
+      &:first-child {
+        margin-right: 0;
+      }
+    }
+  }
+}
+
+.action {
+  margin-bottom: 32px;
+}
+
+.divider {
+  border-top: 1px solid $light;
+}
+
+.preferPhoneRow {
+  height: 34px;
+}

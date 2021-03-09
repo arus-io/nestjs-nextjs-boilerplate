@@ -9,17 +9,20 @@ export class CompaniesController {
   constructor(private readonly companiesService: CompanyService) {}
 
   @Get()
+  @Protected()
   findAll(): Promise<Company[]> {
     return this.companiesService.findAll();
   }
 
   @Get(':id')
+  @Protected()
   findOne(@Param('id') id: string): Promise<Company> {
     return this.companiesService.findOne(id);
   }
 
   @Put('/two-factor')
   @HttpCode(200)
+  @Protected()
   async updateTwoFactor(@Body() body: { twoFactorEnabled: boolean }, @Req() req: Request): Promise<Company> {
     await this.companiesService.updateTwoFactor(body.twoFactorEnabled, (req as any).companyId);
     return this.companiesService.findOne((req as any).companyId);

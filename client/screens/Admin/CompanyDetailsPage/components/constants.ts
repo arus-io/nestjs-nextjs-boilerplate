@@ -1,4 +1,3 @@
-import { IFilterProps } from '../../../../components/DataFilterControls';
 import { IUserVM } from '../../../Hr/types';
 
 export const employeesFiltersData: { [key: string]: IFilterProps<IUserVM> } = {

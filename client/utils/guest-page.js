@@ -12,7 +12,7 @@ const guestPage = (BaseComponent) => {
     componentDidUpdate() {
       const { me, router } = this.props;
       if (me) {
-        const nextUrl = router.query.backTo ?? (me.isHr ? '/hr/dashboard' : '/');
+        const nextUrl = router.query.backTo ?? '/';
         Router.push(nextUrl);
       }
     }
@@ -45,7 +45,7 @@ const guestPage = (BaseComponent) => {
       }
       return {};
     }
-    const hrRedirect = state.auth.me.isHr ? '/hr/dashboard' : '/';
+    const hrRedirect = '/';
     if (res) {
       res.writeHead(302, {
         Location: `http://${req.subdomain}.${process.env.SITE_DOMAIN}${hrRedirect}`,

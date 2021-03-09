@@ -1,0 +1,50 @@
+@import '../../constants/colors';
+
+$mobileWidth: 670px;
+
+.list {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  white-space: nowrap;
+  li {
+    margin-right: 24px;
+    a {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: right;
+      color: $lightText;
+      &.active {
+        color: $primary;
+        svg {
+          fill: $primary;
+        }
+      }
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+
+    @media screen and (max-width: $mobileWidth) {
+      margin-right: 16px;
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+      a {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Hide all navigation links when printing
+@media print {
+  .list {
+    display: none;
+  }
+}

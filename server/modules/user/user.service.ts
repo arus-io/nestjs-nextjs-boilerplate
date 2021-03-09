@@ -12,11 +12,10 @@ export class UserService {
     private readonly userRepo: Repository<User>,
   ) {}
 
-  async findOne(userId: string, companyId: string): Promise<User> {
+  async findOne(userId: string): Promise<User> {
     const result: User = await this.userRepo
       .createQueryBuilder('u')
-      .innerJoinAndSelect('u.company', 'c')
-      .addSelect('ua.userId')
+      .leftJoinAndSelect('u.company', 'c')
       .where('u.id = :userId', { userId })
       .getOne();
     return result;

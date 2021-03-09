@@ -1,4 +1,4 @@
-import { Body, Controller, HttpCode, Post, Req, Request, Put } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, Request, Put, Get } from '@nestjs/common';
 
 import { AppLogger } from '../infra/logger/app.logger';
 import { AuthService } from './auth.service';
@@ -13,6 +13,7 @@ import {
   type2fa,
   Verify2faDto,
 } from './user.dto';
+import { UserService } from './user.service';
 
 export interface ILoginResponse {
   token: string;
@@ -25,7 +26,7 @@ export interface ILoginResponse {
 @Controller('v2/auth')
 export class AuthController {
   private logContext = 'AuthController';
-  constructor(private readonly authService: AuthService, private logger: AppLogger) {}
+  constructor(private readonly authService: AuthService, private readonly userService: UserService, private logger: AppLogger) {}
 
   @Post('login')
   @HttpCode(200)
@@ -100,13 +101,10 @@ export class AuthController {
     });
   }
 
-  @Post('reset-password')
+  @Get('me')
   @HttpCode(200)
-  async resetPassword(@Req() req: Request, @Body() body: ResetPassworddDto): Promise<any> {
-    return await this.authService.changePasswordWithToken(body, {
-      subdomain: (req as any).subdomain,
-      companyId: (req as any).companyId,
-    });
+  async getMe(@Req() req): Promise<any> {
+    return await this.userService.findOne(req.user.id);
   }
 
   @Put('me/change-password')

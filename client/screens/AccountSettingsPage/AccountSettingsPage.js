@@ -20,7 +20,7 @@ const TABS_IDS = {
   security: 'security',
 };
 
-const AccountSettingsPage = ({ router, isHr }) => {
+const AccountSettingsPage = ({ router }) => {
   const tab = router?.query?.tab || TABS_IDS.myInfo;
 
   return (
@@ -32,11 +32,11 @@ const AccountSettingsPage = ({ router, isHr }) => {
       </PageTitle>
 
       <Nav>
-        <NavLink href={isHr ? '/hr/settings' : '/settings'} color="primary" active={tab === TABS_IDS.myInfo}>
+        <NavLink href={'/settings'} color="primary" active={tab === TABS_IDS.myInfo}>
           My Info
         </NavLink>
         <NavLink
-          href={`${isHr ? '/hr/settings' : '/settings'}?tab=password`}
+          href={`/settings?tab=password`}
           color="primary"
           active={tab === TABS_IDS.password}
         >
@@ -51,17 +51,10 @@ const AccountSettingsPage = ({ router, isHr }) => {
             Security
           </NavLink>
         )} */}
-        {isHr ? (
-          <>
-            <NavLink href="/hr/settings?tab=company" color="primary" active={tab === TABS_IDS.company}>
-              Company
-            </NavLink>
-          </>
-        ) : null}
       </Nav>
       {tab === TABS_IDS.myInfo && <AccountInformationForm />}
       {tab === TABS_IDS.password && <AccountPasswordForm />}
-      {tab === TABS_IDS.company && isHr ? <CompanySettings /> : null}
+      {/*{tab === TABS_IDS.company && !isSuperuser ? <CompanySettings /> : null}*/}
       {tab === TABS_IDS.security ? 'Security' : null}
     </>
   );
@@ -69,22 +62,7 @@ const AccountSettingsPage = ({ router, isHr }) => {
 
 AccountSettingsPage.propTypes = {
   router: PropTypes.object,
-  isHr: PropTypes.bool,
 };
 
-const AccountSettingsPageEnhanced = compose(
-  withRouter,
-  connect((state) => {
-    const {
-      auth: {
-        me: { isHr },
-      },
-    } = state;
 
-    return {
-      isHr,
-    };
-  }),
-)(AccountSettingsPage);
-
-export default shouldBeLoggedIn(AccountSettingsPageEnhanced);
+export default shouldBeLoggedIn(AccountSettingsPage);

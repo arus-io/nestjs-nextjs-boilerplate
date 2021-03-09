@@ -11,6 +11,10 @@ import { DBModule } from './db.module';
 import { GqlModule } from './gql.module';
 import { MessageModule } from './messages/message.module';
 import { UserModule } from './user/user.module';
+import { CompanyMiddleware } from './user/lib/company.middleware';
+import { AuthMiddleware } from './user/lib/auth.middleware';
+import { getAsMiddleware } from '../old-code-integration';
+const url = require('url');
 
 @Module({
   imports: [
@@ -35,9 +39,13 @@ import { UserModule } from './user/user.module';
     },
   ],
 })
+
+//@TODO: migrate
+
 export class AppModule implements NestModule {
   constructor(private connection: Connection) {}
 
   configure(consumer: MiddlewareConsumer) {
+    getAsMiddleware(consumer);
   }
 }

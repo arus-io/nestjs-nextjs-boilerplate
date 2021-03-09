@@ -271,7 +271,6 @@ export class AuthService {
     } else {
       userQ
         .innerJoinAndSelect('u.companyId', 'c')
-        .addSelect('ua.userId');
     }
     const user: User = await userQ.where(where[0], where[1]).getOne();
     return { user, company: user?.company };

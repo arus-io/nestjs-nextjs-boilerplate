@@ -6,6 +6,7 @@ import { Link } from '../../router';
 import Banner from './Banner';
 import { BannerContext, BannerContextProvider } from './bannerContext';
 import styles from './NavigationLayout.module.scss';
+import MainNavigation from '../../components/MainNavigation';
 
 const NavigationLayout: React.FunctionComponent = ({ children }) => (
   <>
@@ -16,7 +17,7 @@ const NavigationLayout: React.FunctionComponent = ({ children }) => (
             <Logo className={styles.logo} height={32} width={116} />
           </a>
         </Link>
-        <h1>Main Navigation</h1>
+        <MainNavigation />
       </div>
     </div>
     <BannerContextProvider>

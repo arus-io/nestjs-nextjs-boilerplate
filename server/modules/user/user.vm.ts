@@ -21,7 +21,7 @@ export class User {
   @IsOptional()
   phone: string;
 
-  @Field(() => Company)
+  @Field(() => Company, { nullable: true })
   company: Company;
 
 }

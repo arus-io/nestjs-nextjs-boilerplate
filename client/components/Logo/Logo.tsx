@@ -43,8 +43,7 @@ const LogoWrapped = (props) => {
   });
 
   if (error || loading || !data) return null;
-  const { logo, name } = data.me.company;
-  return <Logo logo={logo} companyName={name} {...props} />;
+  return <Logo logo={data.me.company?.logo} companyName={data.me?.company?.name} {...props} />;
 };
 
 export default LogoWrapped;

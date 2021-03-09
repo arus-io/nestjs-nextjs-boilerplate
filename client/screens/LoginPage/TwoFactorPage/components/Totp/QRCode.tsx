@@ -20,6 +20,7 @@ const QRCodeDisplay = ({ qrCodeValue }: IProps) => {
       renderAs={'svg'}
       className={styles.qrCode}
       imageSettings={{
+        src: '',
         x: null,
         y: null,
         height: 24,

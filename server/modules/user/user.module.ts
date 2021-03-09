@@ -12,6 +12,7 @@ import { UserController } from './user.controller';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { InfraModule } from '../infra/infra.module';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [

@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { IUserVM } from '../../../screens/Hr/types';
 
 export interface IWithUserProps {
-  user: IUserVM;
+  user: any;
 }
 
 const withUser = <P extends IWithUserProps>(Component: React.ComponentType<P>): React.FC<Omit<P, 'user'>> => {

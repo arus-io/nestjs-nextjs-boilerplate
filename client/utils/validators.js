@@ -2,7 +2,14 @@ import isEmail from 'is-email';
 import isSubdomainValid from 'is-subdomain-valid';
 import isUrl from 'is-url-superb';
 import trimWhiteSpace from './trim';
-import COMMON_REGEX from '../../constants/common-regex';
+
+const COMMON_REGEX = {
+  password: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/,
+  phone: /^\d{10}$/g,
+  zipCode: /^\d{5}(?:[-\s]\d{4})?$/,
+  // Only accepts '-' & spaces or full number
+  ssn: /^(?!123([ -]?)45([ -]?)6789)(?!\b(\d)\3+\b)(?!000|666|900|999)[0-9]{3}([ -]?)(?!00)[0-9]{2}\4(?!0000)[0-9]{4}$/,
+};
 
 export const fieldRequired = (value) => {
   const isEmptyArray = Array.isArray(value) && !value.length;

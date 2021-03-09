@@ -3,7 +3,6 @@ require('./modules/infra/config/_loadEnvironment');
 const { parse } = require('url');
 const next = require('next');
 const express = require('express');
-const path = require('path');
 const port = parseInt(process.env.PORT, 10) || 3000;
 
 const app = next({ dev: true, dir: './client' });

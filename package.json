@@ -17,7 +17,7 @@
     "build": "npm run build:next && npm run build:server && npm run copy:dist",
     "build:next": "next build client",
     "build:server": "nest build",
-    "copy:dist": "cp -r static dist/static/",
+    "copy:dist": "cp -r client/static dist/static/",
     "lint": "eslint .",
     "postinstall": "if [ \"$NODE_ENV\" = production ]; then npm run typeorm migration:run; fi;",
     "storybook": "start-storybook",

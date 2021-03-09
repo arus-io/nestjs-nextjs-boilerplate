@@ -1,0 +1,20 @@
+@import '../../constants/colors';
+
+.back {
+  color: $text;
+  font-size: 14px;
+  line-height: 19px;
+  padding: 4px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.icon {
+  margin-right: 8px;
+}
+
+.text {
+  margin-top: 2px;
+}

@@ -15,9 +15,6 @@ import { ConfigService } from '@nestjs/config';
 import { Company } from '../company/models/company.entity';
 import { logger } from '../infra/logger';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const COMMON_REGEX = require('../../../constants/common-regex');
-
 const TOKEN_EXPIRATION_SEC = 60 * 60 * 24;
 const TOKEN_REFRESH_SEC = 1;
 
@@ -270,7 +267,7 @@ export class AuthService {
       userQ.andWhere('u.superuser = :superuser', { superuser: true });
     } else {
       userQ
-        .innerJoinAndSelect('u.companyId', 'c')
+        .innerJoinAndSelect('u.company', 'company')
     }
     const user: User = await userQ.where(where[0], where[1]).getOne();
     return { user, company: user?.company };
@@ -375,7 +372,8 @@ export class AuthService {
   }
 
   public async changePassword(user: User, newPassword) {
-    if (!newPassword.match(COMMON_REGEX.password)) {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
+    if (!newPassword.match(passwordRegex)) {
       throw new BadRequestException(
         'Password must be minimum 8 characters, must contain an uppercase letter, ' +
           'a lower case letter, at least one number and one special character.',

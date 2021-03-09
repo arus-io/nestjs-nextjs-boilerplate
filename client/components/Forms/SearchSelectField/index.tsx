@@ -4,7 +4,6 @@ import React from 'react';
 import Scroll from 'react-scroll';
 import SelectSearch from 'react-select-search/dist/cjs';
 
-import { IWarnOn } from '../../../screens/Hr/types';
 import Label from '../../Label';
 import DescriptionText from '../DescriptionText';
 import HelpText from '../HelpText';
@@ -74,13 +73,12 @@ interface IProps {
   disabled?: boolean;
   className?: string;
   multiple?: boolean;
-  warnOn?: IWarnOn[];
   allowSearch?: boolean;
   placeholder?: string;
   onChange?: (id: string, form: any) => any;
 }
 
-const SearchSelectField = ({ id, label, help, description, warnOn, className, ...rest }: IProps) => {
+const SearchSelectField = ({ id, label, help, description, className, ...rest }: IProps) => {
   const [field, meta] = useField<string>(id);
   const { error, touched } = meta;
 

@@ -58,7 +58,7 @@ class MyApp extends App<any> {
     const token = getToken(); // ctx.store.getState().auth.token;
 
     if (!token) return;
-    const { exp, iat } = jwt_decode(token);
+    const { exp, iat } = jwt_decode(token) as any;
     const now = Math.floor(Date.now() / 1000);
     if (now - iat >= TOKEN_REFRESH_SEC) {
       await ctx.store.dispatch(refreshTokenAction());

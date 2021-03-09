@@ -6,19 +6,19 @@ import { getRepository } from 'typeorm';
 
 import { clearDatabase, createBasicData, getAuthHeaders, TestAppModule } from '../../test-utils/test-app.module';
 import { Company } from '../company/models/company.entity';
-import { MessagesService } from '../messages/messages.service.old';
+import { MessageService } from '../messages/message.service';
+import { ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { AuthUtils } from './lib/authUtils';
 import { User } from './models/user.entity';
-import { UserAccess } from './models/useraccess.entity';
 import { UserModule } from './user.module';
-import { ConfigService } from '@nestjs/config';
 
 describe('#Auth', () => {
   let app: INestApplication;
   let api;
   let data: { user: User; admin: User; company: Company };
   let customConfig = {};
+  let configService, messageService;
 
   afterAll(async () => {
     await app.close();
@@ -29,12 +29,10 @@ describe('#Auth', () => {
     const moduleRef = await Test.createTestingModule({
       imports: [TestAppModule, UserModule],
     }).compile();
-    const configService = moduleRef.get<ConfigService>(ConfigService);
-    jest
-      .spyOn(configService, 'get')
-      .mockImplementation((config) =>
-        customConfig[config] ? customConfig[config] : configService['internalConfig'][config],
-      );
+    configService = moduleRef.get<ConfigService>(ConfigService);
+
+    messageService = moduleRef.get<MessageService>(MessageService);
+
     app = await TestAppModule.boostrap(moduleRef);
     api = app.getHttpServer();
     await clearDatabase(app);
@@ -102,9 +100,11 @@ describe('#Auth', () => {
       done();
     });
 
-    it(`should reject login if no access`, async (done) => {
-      const uaModel = getRepository(UserAccess);
-      await uaModel.clear();
+    it(`should reject login if no access`, async () => {
+      const userModel = getRepository(User);
+      await userModel.update(data.user.id, {
+        company: null
+      });
 
       const res = await request(api)
         .post('/v2/auth/login')
@@ -114,11 +114,9 @@ describe('#Auth', () => {
         })
         .expect(400);
       expect(res.body.message).toContain('Invalid user');
-      await uaModel.insert({
-        userId: data.user.id,
-        companyId: data.company.id,
+      await userModel.update(data.user.id, {
+        company: data.company
       });
-      done();
     });
 
     it('should handle errors correctly', async (done) => {
@@ -266,7 +264,7 @@ describe('#Auth', () => {
     });
 
     it(`login: admin should make a special token, and block access to protected routes`, async (done) => {
-      customConfig['ADMIN_TWO_FACTOR'] = 'true';
+      configService.internalConfig['ADMIN_TWO_FACTOR'] = 'true';
       TestAppModule.subdomain = 'admin';
       const { body } = await request(api)
         .post('/v2/auth/login')
@@ -306,7 +304,7 @@ describe('#Auth', () => {
       });
 
       it('should reject if admin 2fa not enabled', async (done) => {
-        customConfig['ADMIN_TWO_FACTOR'] = 'false';
+        configService.internalConfig['ADMIN_TWO_FACTOR'] = 'false';
         const token = await getAuthHeaders(app, data.admin, null);
         const res = await request(api).post('/v2/auth/2fa/enable/totp').set(token).expect(400);
         expect(res.body.message).toContain('not enabled');
@@ -314,7 +312,7 @@ describe('#Auth', () => {
       });
 
       it('should accept if admin 2fa is enabled', async (done) => {
-        customConfig['ADMIN_TWO_FACTOR'] = 'true';
+        configService.internalConfig['ADMIN_TWO_FACTOR'] = 'true';
         const token = await getAuthHeaders(app, data.admin, null);
         const res = await request(api).post('/v2/auth/2fa/enable/totp').set(token).expect(200);
         expect(res.body.type).toEqual('totp');
@@ -385,7 +383,7 @@ describe('#Auth', () => {
           twoFactorCounter: 0,
         });
 
-        const spy = jest.spyOn(MessagesService.getInstance().smsClient, 'sendMessage');
+        const spy = jest.spyOn(messageService.smsClient, 'sendMessage');
 
         const res1 = await request(api).post('/v2/auth/2fa/enable/sms').set(token).expect(400);
         expect(res1.body.message).toContain("User doesn't have a phone number. Can't set SMS verification.");
@@ -476,7 +474,7 @@ describe('#Auth', () => {
     it('should send an email with a valid token to reset the password', async () => {
       TestAppModule.subdomain = 'test';
       const email = data.user.email;
-      const spy = jest.spyOn(MessagesService.getInstance(), 'sendForgotPassword');
+      const spy = jest.spyOn(messageService, 'sendForgotPassword');
       const res = await request(api).post('/v2/auth/forgot-password').send({ email }).expect(200);
 
       expect(res.body).toStrictEqual({ success: true });

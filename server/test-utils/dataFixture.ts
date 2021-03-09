@@ -5,7 +5,6 @@ import { RedisService } from '../modules/infra/cache/redis.service';
 import { Company } from '../modules/company/models/company.entity';
 import { AuthUtils } from '../modules/user/lib/authUtils';
 import { User } from '../modules/user/models/user.entity';
-import { UserAccess } from '../modules/user/models/useraccess.entity';
 
 export class DataFixture {
   private connection: Connection;
@@ -25,7 +24,6 @@ export class DataFixture {
   async localDevDataset() {
     const companyModel = this.getRepo(Company);
     const userModel = this.getRepo(User);
-    const uaModel = this.getRepo(UserAccess);
 
     await this.insertMigrations();
     const companies = await companyModel.save([
@@ -38,7 +36,7 @@ export class DataFixture {
     ]);
 
     const password = await AuthUtils.hashPassword('123');
-    const admin = await userModel.save([
+    await userModel.save([
       {
         email: 'admin@mail.com',
         firstName: 'Admin Name',
@@ -48,40 +46,16 @@ export class DataFixture {
         createdAt: new Date(),
       },
     ]);
-    const ees = await userModel.save(
+    await userModel.save(
       Array.from({ length: 10 }, (v, index) => ({
-        email: `ee${index + 1}@mail.com`,
-        firstName: `Employee${index + 1} Name`,
-        lastName: `Employee${index + 1} Last`,
+        email: `user${index + 1}@mail.com`,
+        firstName: `User${index + 1} Name`,
+        lastName: `User${index + 1} Last`,
         password,
         createdAt: new Date(),
+        company: companies[0]
       })),
     );
-    const mgrs = await userModel.save(
-      Array.from({ length: 10 }, (v, index) => ({
-        email: `mgr${index + 1}@mail.com`,
-        firstName: `Manager${index + 1} Name`,
-        lastName: `Manager${index + 1} Last`,
-        password,
-        createdAt: new Date(),
-      })),
-    );
-    const hrs = await userModel.save(
-      Array.from({ length: 4 }, (v, index) => ({
-        email: `hr${index + 1}@mail.com`,
-        firstName: `HR${index + 1} Name`,
-        lastName: `HR${index + 1} Last`,
-        password,
-        createdAt: new Date(),
-      })),
-    );
-    await uaModel.save(
-      [...admin, ...ees, ...mgrs, ...hrs].map((u) => ({
-        userId: (u as any).id,
-        companyId: companies[0].id,
-      })),
-    );
-
   }
 
   insertMigrations = async () => {

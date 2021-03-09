@@ -1,0 +1,37 @@
+@import '../../constants/colors';
+
+.table {
+  color: $text;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  th {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 21px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    padding-right: 16px;
+    padding-left: 16px;
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+  td {
+    padding: 16px;
+    &:first-child {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 24px;
+    }
+  }
+  tbody tr {
+    padding: 16px;
+    background-color: $background;
+    &:nth-child(2n) {
+      background-color: #ffffff;
+    }
+  }
+}

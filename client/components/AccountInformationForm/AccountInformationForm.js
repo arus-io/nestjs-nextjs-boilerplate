@@ -50,18 +50,10 @@ const AccountInformationForm = ({
       </div>
       <div className={styles.row}>
         <Field label="Email" component={ReadOnlyInput} name="email" className={cx(styles.input)} id="email" />
-        <Field
-          label="Personal Email (optional)"
-          component={Input}
-          name="personalEmail"
-          className={cx(styles.input)}
-          id="personal-email"
-          validate={[validEmail]}
-        />
       </div>
       <div className={styles.row}>
         <Field
-          label="Phone (optional)"
+          label="Phone"
           component={PhoneField}
           name="phone"
           className={cx(styles.input)}
@@ -70,16 +62,6 @@ const AccountInformationForm = ({
           validate={[validPhone]}
         />
         {/*<Field label="SSN" component={Input} name="ssn" className={cx(styles.input)} id="ssn" validate={[validSSN]} />*/}
-      </div>
-
-      <div className={styles.row}>
-        <Field
-          text="Send notifications to phone when possible"
-          component={Checkbox}
-          name="prefersPhone"
-          id="prefersPhone"
-          disabled={!hasPhone}
-        />
       </div>
 
       <hr className={styles.divider} />

@@ -1,0 +1,152 @@
+@import '../../constants/colors';
+
+$mobileWidth: 640px;
+
+.headerTable {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px 5px;
+
+  .haveIcon {
+    padding: 4px 24px;
+  }
+  .icon {
+    fill: currentColor;
+  }
+}
+
+.tableWrapper {
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.table {
+  color: $text;
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+  margin-bottom: 24px;
+  th {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 21px;
+    text-transform: uppercase;
+    padding-bottom: 8px;
+    padding-right: 16px;
+    padding-left: 16px;
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+  td {
+    padding: 16px;
+    font-size: 14px;
+    line-height: 21px;
+
+    &:first-child {
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 24px;
+    }
+  }
+  tbody tr {
+    background-color: $background;
+    padding: 16px;
+
+    &:nth-child(2n) {
+      background-color: #ffffff;
+    }
+  }
+
+  .rowAction {
+    padding: 0;
+    .rotate {
+      transform: rotate(-90deg);
+    }
+  }
+
+  .rowActions {
+    display: flex;
+    padding-right: 16px;
+    justify-content: flex-end;
+    align-items: center;
+
+    .action {
+      margin-right: 20px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    @media screen and (max-width: $mobileWidth) {
+      width: 100%;
+      justify-content: flex-start;
+    }
+  }
+
+  .mobileOnlyTitle {
+    display: none;
+    margin-right: 8px;
+    font-weight: 900;
+    text-transform: uppercase;
+
+    @media screen and (max-width: $mobileWidth) {
+      display: inline;
+    }
+  }
+
+  @media screen and (max-width: $mobileWidth) {
+    .mobileOnlyTitle {
+      display: inline;
+    }
+    thead {
+      display: none;
+    }
+    tr {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    td {
+      margin: 0 0 8px;
+      padding: 4px 0 !important;
+      width: 100%;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.ascending,
+.descending {
+  &:after {
+    display: inline-block;
+    color: $secondary;
+    margin-left: 4px;
+  }
+}
+
+.ascending {
+  &:after {
+    content: '↑';
+  }
+}
+
+.descending {
+  &:after {
+    content: '↓';
+  }
+}
+.sortable {
+  &:hover {
+    cursor: pointer;
+  }
+}
+.clickable {
+  cursor: pointer;
+}

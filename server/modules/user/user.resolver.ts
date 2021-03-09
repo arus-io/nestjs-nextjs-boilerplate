@@ -13,7 +13,11 @@ export class UserResolver {
   @Query((returns) => [GlobalSearchResult])
   @Protected('superuser')
   async globalSearch(@Args('query', { nullable: false }) query: string) {
-    return this.userService.globalSearch(query);
+    if (query.trim() != '') {
+      return this.userService.globalSearch(query);
+    } else {
+      return []
+    }
   }
 
   @Query((returns) => User)

@@ -34,11 +34,11 @@ export class UserService {
     const sqlUser = `
       SELECT
         'User' as entity,
-        title as label,
+        "firstName" || ' ' || "lastName" as label,
         id
       FROM users
       WHERE
-        to_tsvector($1, firstName || ' ' || lastName) @@ to_tsquery($1, $2)
+        to_tsvector($1, "firstName" || ' ' || "lastName") @@ to_tsquery($1, $2)
         AND "deletedAt" IS NULL`;
     const sqlCompany = `
       SELECT

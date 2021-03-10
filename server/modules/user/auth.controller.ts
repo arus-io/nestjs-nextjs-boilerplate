@@ -101,10 +101,13 @@ export class AuthController {
     });
   }
 
-  @Get('me')
+  @Post('reset-password')
   @HttpCode(200)
-  async getMe(@Req() req): Promise<any> {
-    return await this.userService.findOne(req.user.id);
+  async resetPassword(@Req() req: Request, @Body() body: ResetPassworddDto): Promise<any> {
+    return await this.authService.changePasswordWithToken(body, {
+      subdomain: (req as any).subdomain,
+      companyId: (req as any).companyId,
+    });
   }
 
   @Put('me/change-password')
@@ -112,5 +115,11 @@ export class AuthController {
   @Protected()
   async changePassword(@Req() req, @Body() body: ChangePasswordDto): Promise<any> {
     return await this.authService.changePassword(req.user, body.newPassword);
+  }
+
+  @Get('me')
+  @HttpCode(200)
+  async getMe(@Req() req): Promise<any> {
+    return await this.userService.findOne(req.user.id);
   }
 }

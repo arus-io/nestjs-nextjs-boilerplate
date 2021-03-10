@@ -216,7 +216,7 @@ export class AuthService {
 
   async impersonate(dto: ImpersonateDto) {
     const { user, company } = await this.getBasicAuthData(dto.companyId, ['u.id = :userId', dto]);
-    if (!user) {
+    if (!user || !company || dto.companyId != company.id) {
       throw new BadRequestException('Invalid User or Company.');
     }
 
@@ -341,7 +341,7 @@ export class AuthService {
     const tokenInfo = await this.generateResetToken({ id: user.id, companyId }, 60 * 60 * 2);
     await this.usersRepository.update(user.id, { verificationToken: tokenInfo.token });
     const baseUrl = this.configService.get('BASE_URL')
-    const link = `${baseUrl}/reset-password?email=${encodeURIComponent(email)}&resetToken=${tokenInfo.token}`;
+    const link = `https://${subdomain}.${baseUrl}/reset-password?email=${encodeURIComponent(email)}&resetToken=${tokenInfo.token}`;
     await this.messageService.sendForgotPassword(user.id, user.email, link);
     return { success: true };
   }

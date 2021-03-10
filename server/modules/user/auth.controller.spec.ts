@@ -18,7 +18,12 @@ describe('#Auth', () => {
   let api;
   let data: { user: User; admin: User; company: Company };
   let customConfig = {};
-  let configService, messageService;
+  let configService;
+
+  let messageService = { sendForgotPassword: jest.fn(),
+    sendSmsTwoFactor: jest.fn(),
+  };
+
 
   afterAll(async () => {
     await app.close();
@@ -28,11 +33,11 @@ describe('#Auth', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [TestAppModule, UserModule],
-    }).compile();
+    })
+      .overrideProvider(MessageService)
+      .useValue(messageService)
+      .compile();
     configService = moduleRef.get<ConfigService>(ConfigService);
-
-    messageService = moduleRef.get<MessageService>(MessageService);
-
     app = await TestAppModule.boostrap(moduleRef);
     api = app.getHttpServer();
     await clearDatabase(app);
@@ -66,7 +71,7 @@ describe('#Auth', () => {
       expect(body.token).toBeDefined();
       expect(body.needs2fa).toBe(false);
 
-      const tokenContent = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, body.token);
+      const tokenContent = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), body.token);
       expect(tokenContent.id).toBe(data.user.id);
       expect(!!tokenContent.impersonating).toBe(false);
       expect(!!tokenContent.superuser).toBe(false);
@@ -183,7 +188,7 @@ describe('#Auth', () => {
       const iat = Math.floor(Date.now() / 1000) - 60 * 60 * 2 - 1;
       const exp = Math.floor(Date.now() / 1000) + 10000;
       const token = await new Promise<string>((resolve) =>
-        jwt.sign({ id: data.user.id, companyId: '1', iat, exp }, process.env.SECRET_TOKEN, (err, token) => {
+        jwt.sign({ id: data.user.id, companyId: '1', iat, exp }, configService.get('SECRET_TOKEN'), (err, token) => {
           resolve(token);
         }),
       );
@@ -195,7 +200,7 @@ describe('#Auth', () => {
       const res = await request(api).post('/v2/auth/refresh').set(headers).expect(200);
 
       expect(token).not.toBe(res.body.token);
-      const tokenContent = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, res.body.token);
+      const tokenContent = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), res.body.token);
       expect(tokenContent.id).toBe(data.user.id);
       expect(tokenContent.companyId).toBe(data.company.id);
       expect(tokenContent.iat).toEqual(tokenContent.exp - 60 * 60 * 24); // 1 day
@@ -231,7 +236,7 @@ describe('#Auth', () => {
       const res = await request(api)
         .post('/v2/auth/refresh')
         // .set(await getAuthHeaders(data.user))
-        .expect(401);
+        .expect(403);
       expect(res.body.message).toBe('Missing or Invalid credentials');
       done(); // @NOTE - there's a weird bug... last test has to have this 'done' :facepalm:
     });
@@ -254,7 +259,7 @@ describe('#Auth', () => {
       // revert - keep test data clean
       // await getRepository(Company).update(data.company.id, { twoFactorEnabled: false });
 
-      const tokenContent = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, body.token);
+      const tokenContent = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), body.token);
       expect(tokenContent.needs2fa).toBe(true);
 
       const res = await request(api).post('/v2/auth/refresh').set({ 'x-access-token': body.token }).expect(403);
@@ -275,7 +280,7 @@ describe('#Auth', () => {
         .expect(200);
       expect(body.token).toBeDefined();
       expect(body.needs2fa).toBe(true);
-      const tokenContent = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, body.token);
+      const tokenContent = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), body.token);
       expect(tokenContent.needs2fa).toBe(true);
       const res = await request(api).post('/v2/auth/refresh').set({ 'x-access-token': body.token }).expect(403);
       expect(res.body.message).toContain('Two Factor Authentication');
@@ -343,7 +348,7 @@ describe('#Auth', () => {
         expect(res1.body.type).toEqual('totp');
         expect(res1.body.success).toEqual(true);
 
-        expect(res1.body.otpauthURL).toContain('otpauth://totp/backend%20platform?secret=');
+        expect(res1.body.otpauthURL).toContain('otpauth://totp/Backend%20platform?secret=');
         const secret = res1.body.otpauthURL.split('=')[1];
 
         const token2fa = AuthUtils.__generate2FAToken(secret);
@@ -355,7 +360,7 @@ describe('#Auth', () => {
 
         const newToken = res2.body.token;
         expect(newToken).toBeDefined();
-        const decoded = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, newToken);
+        const decoded = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), newToken);
         expect(decoded.id).toBe(data.user.id);
         expect(decoded.companyId).toBe(String(data.company.id));
         expect(decoded.needs2fa).toBe(true);
@@ -383,7 +388,7 @@ describe('#Auth', () => {
           twoFactorCounter: 0,
         });
 
-        const spy = jest.spyOn(messageService.smsClient, 'sendMessage');
+        const spy = jest.spyOn(messageService, 'sendSmsTwoFactor');
 
         const res1 = await request(api).post('/v2/auth/2fa/enable/sms').set(token).expect(400);
         expect(res1.body.message).toContain("User doesn't have a phone number. Can't set SMS verification.");
@@ -399,8 +404,8 @@ describe('#Auth', () => {
         expect(dbUser.twoFactorCounter).toBeGreaterThan(0);
 
         const code = AuthUtils.generate2FANumber(dbUser.twoFactorSecret, dbUser.twoFactorCounter);
-        expect(spy.mock.calls[0][0].to).toEqual('123');
-        expect(spy.mock.calls[0][0].body).toEqual(`${code} is your verification code from backend.`);
+        expect(spy.mock.calls[0][1]).toEqual('123');
+        expect(spy.mock.calls[0][2]).toEqual(code);
 
         const res3 = await request(api)
           .post('/v2/auth/2fa/verify')
@@ -410,7 +415,7 @@ describe('#Auth', () => {
 
         const newToken = res3.body.token;
         expect(newToken).toBeDefined();
-        const decoded = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, newToken);
+        const decoded = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), newToken);
         expect(decoded.id).toBe(data.user.id);
         expect(decoded.has2fa).toBe(true);
 
@@ -431,21 +436,23 @@ describe('#Auth', () => {
         .send({ userId: data.user.id, companyId: data.company.id })
         .expect(200);
       expect(res.body.token).toBeDefined();
-      expect(res.body.site).toBe(`http://${data.company.subdomain}.${process.env.BASE_URL}`);
+      expect(res.body.site).toBe(`http://${data.company.subdomain}.${configService.get('BASE_URL')}`);
 
-      const tokenContent = await AuthUtils.verifyJwt(process.env.SECRET_TOKEN, res.body.token);
+      const tokenContent = await AuthUtils.verifyJwt(configService.get('SECRET_TOKEN'), res.body.token);
       expect(tokenContent.id).toBe(data.user.id);
       expect(tokenContent.companyId).toBe(data.company.id);
       expect(tokenContent.impersonating).toBe(true);
       expect(tokenContent.iat).toEqual(tokenContent.exp - 60 * 60); // 60mins
       done();
     });
+
     it('should fail gracefully user', async (done) => {
       await request(api)
         .post('/v2/auth/impersonate')
         .set(await getAuthHeaders(app, data.admin))
         .send({ userId: data.user.id })
         .expect(400);
+
       await request(api)
         .post('/v2/auth/impersonate')
         .set(await getAuthHeaders(app, data.admin))
@@ -482,7 +489,7 @@ describe('#Auth', () => {
       // expect(spy.mock.calls[0][0]).toBe(user.id);
       expect(spy.mock.calls[0][1]).toBe(data.user.email);
       const url = spy.mock.calls[0][2] as string;
-      expect(url).toContain(`https://${data.company.subdomain}.${process.env.BASE_URL}`);
+      expect(url).toContain(`https://${data.company.subdomain}.${configService.get('BASE_URL')}`);
       const resetToken = /.*resetToken=(.*)/.exec(url)[1];
 
       // reset the password

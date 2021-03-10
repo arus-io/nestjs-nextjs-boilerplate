@@ -98,14 +98,14 @@ export class MessageService {
         message.body = content.sms;
         message.subject = '';
         message.to = opts.phone;
-        message.from = opts.fromPhone;
+        message.from = opts.fromPhone || this.configService.get('SMS_FROM');
         message.medium = Medium.SMS;
         await this.sendSms(content, { from: message.from, to: opts.phone });
       } else {
         message.body = content.innerBody || content.html;
         message.subject = content.subject;
         message.to = (opts.mail as any).join ? (opts.mail as any).join(',') : opts.mail;
-        message.from = opts.fromMail;
+        message.from = opts.fromMail || this.configService.get('EMAIL_FROM');
         message.medium = Medium.EMAIL;
         await this.sendEmail(content, { from: message.from, to: opts.mail });
       }

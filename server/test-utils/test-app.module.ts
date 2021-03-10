@@ -127,9 +127,10 @@ export const createBasicData = async (app: INestApplication) => {
   const company = await companyModel.save({
     subdomain: 'test',
     name: 'test',
-    createdAt: new Date(), // there's a bug with curr version
     supportEmail: 'a@a.com',
     logo: 'http://domain.com/logo.png',
+    createdAt: new Date(),
+    updatedAt: new Date()
   });
 
   const admin = userModel.create({
@@ -166,6 +167,7 @@ export const clearDatabase = async (app: INestApplication) => {
       'messages',
     ].map((t) => connection.query(`truncate table "${t}" RESTART IDENTITY cascade`)),
   );
+  await connection.synchronize(true);
   await cache.flushAll();
 };
 

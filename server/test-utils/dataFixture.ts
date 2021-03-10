@@ -32,6 +32,7 @@ export class DataFixture {
         name: 'demo',
         logo: 'https://logo.jpg',
         createdAt: new Date(),
+        updatedAt: new Date()
       },
     ]);
 

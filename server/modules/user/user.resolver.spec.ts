@@ -78,7 +78,7 @@ describe('gql#user', () => {
       expect(data).toStrictEqual(null);
     });
 
-    it('should return matching pcompanies', async () => {
+    it('should return matching companies', async () => {
       const companySubdomainMatch = await getRepo(t.app, Company).save({
         subdomain: 'test2',
         name: 'Company2',

@@ -160,6 +160,8 @@ export const createBasicData = async (app: INestApplication) => {
 export const clearDatabase = async (app: INestApplication) => {
   const cache = app.get(RedisService);
   const connection = app.get(Connection);
+  await connection.synchronize(true);
+  await cache.flushAll();
   await Promise.all(
     [
       'users',
@@ -167,8 +169,6 @@ export const clearDatabase = async (app: INestApplication) => {
       'messages',
     ].map((t) => connection.query(`truncate table "${t}" RESTART IDENTITY cascade`)),
   );
-  await connection.synchronize(true);
-  await cache.flushAll();
 };
 
 export const getAuthHeaders = async (app: INestApplication, t, companyId = '1') => {

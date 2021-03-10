@@ -13,7 +13,6 @@ import request from 'supertest';
 import { Connection, ObjectType, Repository } from 'typeorm';
 
 import { RedisService } from '../modules/infra/cache/redis.service';
-import config from '../modules/infra/config';
 import { AppLogger } from '../modules/infra/logger/app.logger';
 import { LoggerInterceptor } from '../modules/infra/logger/logger.interceptor';
 import { LoggerModule } from '../modules/infra/logger/logger.module';
@@ -31,7 +30,7 @@ import { UserModule } from '../modules/user/user.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [config],
+      load: [],
     }),
     DBModule,
     LoggerModule,

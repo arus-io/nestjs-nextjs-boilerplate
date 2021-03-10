@@ -4,23 +4,18 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RavenInterceptor, RavenModule } from 'nest-raven';
 import { Connection } from 'typeorm';
 
-import config from './infra/config';
 import { LoggerModule } from './infra/logger/logger.module';
 import { CompanyModule } from './company/company.module';
 import { DBModule } from './db.module';
 import { GqlModule } from './gql.module';
 import { MessageModule } from './messages/message.module';
 import { UserModule } from './user/user.module';
-import { CompanyMiddleware } from './user/lib/company.middleware';
-import { AuthMiddleware } from './user/lib/auth.middleware';
 import { getAsMiddleware } from '../old-code-integration';
-const url = require('url');
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [config],
     }),
     DBModule,
     GqlModule,

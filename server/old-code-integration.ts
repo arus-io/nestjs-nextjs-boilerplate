@@ -10,7 +10,7 @@ const dev = process.env.NODE_ENV !== 'production';
 
 // default is empty
 let nextApp = {
-  getRequestHandler: (req) => (req, res) => {
+  getRequestHandler: () => (req, res) => {
     console.log(req.originalUrl);
     throw new Error('BE is in dev mode');
   },

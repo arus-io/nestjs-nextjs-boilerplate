@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import redis, { RedisClient } from 'redis';
 import { promisify } from 'util';
 
-import { TConfiguration } from '../config/config';
 import { AppLogger } from '../logger/app.logger';
 
 @Injectable()
@@ -11,7 +10,7 @@ export class RedisService {
   private context = 'Redis client';
   public client: RedisClient; // @TODO - make private and wrap all methods
 
-  constructor(private logger: AppLogger, configService: ConfigService<TConfiguration>) {
+  constructor(private logger: AppLogger, configService: ConfigService) {
     const client = redis.createClient(configService.get('REDIS_URL'));
     client.set = promisify(client.set).bind(client);
     client.get = promisify(client.get).bind(client);

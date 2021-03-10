@@ -1,12 +1,10 @@
 import path from 'path';
 import { DefaultNamingStrategy, NamingStrategyInterface, Table } from 'typeorm';
 
-import config from './index';
-
 const entities = path.resolve(__dirname, '../../');
 const migrations = path.resolve(__dirname, '../../../db/migrations');
 const root = path.resolve(__dirname, '../../../');
-const db = config().DATABASE_URL;
+const db = process.env.DATABASE_URL;
 
 export class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
   foreignKeyName(

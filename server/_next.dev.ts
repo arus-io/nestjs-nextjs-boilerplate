@@ -1,3 +1,5 @@
+import * as path from 'path';
+
 require('./modules/infra/config/_loadEnvironment');
 
 const { parse } = require('url');
@@ -14,7 +16,7 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use(express.static(path.join(__dirname, '..', 'static')));
+server.use(express.static(path.join(__dirname, '../client', 'static')));
 
 app.prepare().then(() => {
   server.use((req, res) => {

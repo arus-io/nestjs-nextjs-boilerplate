@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config';
 import safeStringify from 'fast-safe-stringify';
 import { createLogger, format, LogEntry, Logger, transports } from 'winston';
 
-import { TConfiguration } from '../config/config';
 const colors = require('colors/safe');
 
 const colorScheme: Record<string, any> = {
@@ -18,7 +17,7 @@ export class AppLogger implements LoggerService {
   private context?: string;
   private readonly logger: Logger;
 
-  constructor(configService: ConfigService<TConfiguration>) {
+  constructor(configService: ConfigService) {
     this.logger = createLogger({
       level: configService.get('LOG_LEVEL', 'info'),
       format: format.json(),

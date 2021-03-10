@@ -3,7 +3,6 @@ import { Test } from '@nestjs/testing';
 import { getRepo, TestAppModule, TestHelper } from '../../test-utils/test-app.module';
 import { Company } from '../company/models/company.entity';
 import { GqlModule } from '../gql.module';
-import { Plan } from '../plan/models/plan.entity';
 import { User } from './models/user.entity';
 import { UserModule } from './user.module';
 
@@ -79,7 +78,7 @@ describe('gql#user', () => {
       expect(data).toStrictEqual(null);
     });
 
-    it('should return matching plans and companies', async () => {
+    it('should return matching pcompanies', async () => {
       const companySubdomainMatch = await getRepo(t.app, Company).save({
         subdomain: 'test2',
         name: 'Company2',
@@ -90,29 +89,13 @@ describe('gql#user', () => {
         name: 'Not this company',
         supportEmail: 'b@b.com',
       });
-      const planMatch = await getRepo(t.app, Plan).save({
-        title: 'testing',
-        managerId: ds.user.id,
-        employeeId: ds.user.id,
-        companyId: ds.company.id,
-        dueDate: new Date(),
-        returnDate: new Date(),
-      });
-      const planDoesnMatch = await getRepo(t.app, Plan).save({
-        title: 'another name',
-        managerId: ds.user.id,
-        employeeId: ds.user.id,
-        companyId: ds.company.id,
-        dueDate: new Date(),
-        returnDate: new Date(),
-      });
+
       const { data, errors } = await t.query(globalSearchQuery(), ds.admin);
 
       expect(errors).toBeUndefined();
       expect(data.globalSearch).toStrictEqual([
         { entity: 'Company', id: companySubdomainMatch.id.toString(), label: companySubdomainMatch.name },
         { entity: 'Company', id: ds.company.id.toString(), label: ds.company.name },
-        { entity: 'Plan', id: planMatch.id.toString(), label: planMatch.title },
       ]);
     });
   });

@@ -1,8 +1,8 @@
 version: '3'
 services:
   db:
-    container_name: backend-db
-    image: postgres:11.5
+    container_name: demo-db
+    image: postgres:12.1
     restart: always
     env_file: .env
     ports:
@@ -13,15 +13,15 @@ services:
       POSTGRES_DB: 'boilerplate'
 
   adminer:
-    container_name: backend-adminer
+    container_name: demo-adminer
     image: adminer
     restart: always
     ports:
       - 8199:8080
 
   redis:
+    container_name: demo-redis
     image: redis:5.0.5-alpine
-    container_name: ourtitl-redis
     restart: always
     ports:
       - '6379:6379'

@@ -28,16 +28,25 @@ Edit your `/etc/hosts` file and add an entry to enable access to `admin.localhos
     ```
 ---
 
-### 🚀 Running 
+### 🚀 Development 
 
-- Download dependencies for both projects running `yarn`
+- Download dependencies for both projects running `yarn install`
 - Backend:
-    - Run the backend in development mode by using `yarn start:dev:be`
-    - First time you need to create the DDL and insert data using `yarn typeorm migration:run`  
+     - First time you need to create the DDL and insert data using `yarn typeorm migration:run`
+     - Run the backend in development mode by using `yarn start:dev:be`
     - Graphql playground available at http://admin.localhost:3001/graphql
 - Frontend:
     - Run the frontend in development mode by using `yarn start:dev:fe`
-    - Login at http://admin.localhost:3000/login
+    - Login at http://admin.localhost:3000/login using `admin@mail.com` and `Password1!`
     
 
 ### ✅ Testing
+
+### 🚀 Deployment
+
+We use Amazon AWS as our preferred cloud provider, see [Terraform Readme](terraform/README.md) for instructions on how to setup the infrastructure
+needed for this demo (kubernetes cluster, dns, postgresql database, etc)
+
+Once the basic infra is created, we use [Github Actions](.github/workflows) scripts to test, build and push the Docker images, and 
+[Helm Chart](charts/demo/README.md) to deploy the new kubernetes definitions to Amazon EKS
+

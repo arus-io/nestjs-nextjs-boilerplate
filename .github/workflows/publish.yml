@@ -2,7 +2,6 @@ name: Publish
 on:
   push:
     branches:
-      - prod
       - master
 jobs:
 
@@ -14,33 +13,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Set env to staging
-        if: endsWith(github.ref, '/master')
-        run: |
-          echo "EKS_CLUSTER=backend-stage" >> $GITHUB_ENV
-          echo "NAMESPACE_NAME=stage" >> $GITHUB_ENV
-          echo "IMAGE_TAG=${{ github.sha }}-stage" >> $GITHUB_ENV
-          echo "SITE_DOMAIN=backend.net" >> $GITHUB_ENV
-
       - name: Set env to production
-        if: endsWith(github.ref, '/prod')
         run: |
-          echo "EKS_CLUSTER=backend-prod" >> $GITHUB_ENV
+          echo "EKS_CLUSTER=demo-prod" >> $GITHUB_ENV
           echo "NAMESPACE_NAME=prod" >> $GITHUB_ENV
           echo "IMAGE_TAG=${{ github.sha }}-prod" >> $GITHUB_ENV
-          echo "SITE_DOMAIN=backend.com" >> $GITHUB_ENV
+          echo "SITE_DOMAIN=arus.io" >> $GITHUB_ENV
 
-
-      - name: Configure AWS credentials - Stage
-        if: endsWith(github.ref, '/master')
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_STAGE }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY_STAGE }}
-          aws-region: us-west-2
 
       - name: Configure AWS credentials - Prod
-        if: endsWith(github.ref, '/prod')
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID_PROD }}
@@ -55,9 +36,9 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: backend #@TODO: move to var
+          ECR_REPOSITORY: demo-prod #@TODO: move to var
         run: |
-          docker build --build-arg site_domain=$SITE_DOMAIN --build-arg api_domain=$SITE_DOMAIN --build-arg intercom_id=$INTERCOM_ID --build-arg gtm_id=$GTM_ID -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg site_domain=$SITE_DOMAIN --build-arg api_domain=$SITE_DOMAIN  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 
@@ -71,5 +52,5 @@ jobs:
         #@TODO: move to var
         run: |
           sudo snap install helm --classic
-          helm upgrade master-backend charts/backend --install --create-namespace --namespace=$NAMESPACE_NAME -f charts/backend/values/$NAMESPACE_NAME.yaml --set image.tag=$IMAGE_TAG
+          helm upgrade demo charts/demo --install --create-namespace --namespace=$NAMESPACE_NAME -f charts/demo/values/$NAMESPACE_NAME.yaml --set image.tag=$IMAGE_TAG
 

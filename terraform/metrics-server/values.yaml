@@ -1,3 +1,0 @@
-args:
-  - --logtostderr
-  - --kubelet-preferred-address-types=InternalIP

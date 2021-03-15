@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: 123456.dkr.ecr.us-west-2.amazonaws.com/test #@TODO: move to var
+  repository: 143694936311.dkr.ecr.us-west-2.amazonaws.com/demo-prod #@TODO: move to var
   tag: prod
 
 config:
@@ -15,10 +15,8 @@ config:
 secrets:
   databaseUrl: "postgres://test:pass@dbX.us-west-2.rds.amazonaws.com:5432/test" #@TODO: move to var
   sendgridApiKey: ""
-  s3SecretKey: ""
-  secretToken: ""
+  secretToken: "1Ny7ue7EZYKzjQAtDJLvAJ8zYL6KkQpsjZHZyabZ"
   twilioAuthToken: ""
-
 
 resources:
   requests:

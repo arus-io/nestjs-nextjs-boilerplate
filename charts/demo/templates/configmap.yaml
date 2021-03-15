@@ -9,17 +9,12 @@ metadata:
 {{- with .Values.config }}
 data:
   ENV_NAME: {{ .envName | quote }}
-  S3_BUCKET: {{ .s3Bucket | quote }}
-  S3_REGION: {{ .s3Region | quote }}
-  S3_ACCESS_KEY: {{ .s3AccessKey | quote }}
   EMAIL_SUPPORT: {{ .emailSupport | quote }}
   EMAIL_FROM: {{ .emailFrom | quote }}
   EMAIL_WHITELIST: {{ .emailWhitelist | quote }}
   SITE_DOMAIN: {{ .siteDomain | quote }}
   SMS_CLIENT: {{ .smsClient | quote }}
   TWILIO_ACCOUNT_SID: {{ .twilioAccountSid | quote }}
-  DOCS_CLIENT: {{ .docsClient | quote }}
-  GDRIVE_OUTPUT_FOLDER: {{ .gdriveOutputFolder | quote }}
   SENTRY_ENVIRONMENT: {{ .sentryEnvironment | quote }}
   SERVER_SENTRY_DSN: {{ .sentryServerDsn | quote }}
   ADMIN_TWO_FACTOR: {{ .adminTwoFactor | quote }}

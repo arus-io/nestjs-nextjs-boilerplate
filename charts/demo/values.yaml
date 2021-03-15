@@ -37,7 +37,6 @@ config:
 secrets:
   databaseUrl: ""
   sendgridApiKey: ""
-  s3SecretKey: ""
   secretToken: ""
   redisUrl: "redis://demo-redis:6379"
   twilioAuthToken: ""

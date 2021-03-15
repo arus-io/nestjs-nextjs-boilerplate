@@ -10,9 +10,8 @@ ENV API_DOMAIN=$api_domain
 
 
 WORKDIR /usr/local/app
-RUN apk add g++ make python # postgresql-client
+RUN apk add g++ make python
 RUN apk add postgresql-client --repository=http://dl-cdn.alpinelinux.org/alpine/v3.11/main
-
 
 # Installing dependencies
 COPY package.json ./

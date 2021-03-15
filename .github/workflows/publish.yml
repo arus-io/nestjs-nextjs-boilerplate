@@ -31,7 +31,7 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, Tag image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -57,6 +57,10 @@ jobs:
         id: helm-deploy
         #@TODO: move to var
         run: |
-          sudo snap install helm --classic
+          curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
+          sudo apt-get install apt-transport-https --yes
+          echo "deb https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+          sudo apt-get update
+          sudo apt-get install helm
           helm upgrade demo charts/demo --install --create-namespace --namespace=$NAMESPACE_NAME -f charts/demo/values/$NAMESPACE_NAME.yaml --set image.tag=$IMAGE_TAG
 

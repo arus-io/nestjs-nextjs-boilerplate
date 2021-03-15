@@ -2,7 +2,7 @@ name: Pull Request
 on:
   push:
     branches-ignore:
-      - develop
+      - master
 
 jobs:
 

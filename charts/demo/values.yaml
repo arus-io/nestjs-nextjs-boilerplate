@@ -29,7 +29,6 @@ config:
   siteDomain: ""
   smsClient: none
   twilioAccountSid: ""
-  docsClient: "gdrive"
   gdriveOutputFolder: ""
   sentryServerDsn: ""
   adminTwoFactor: "false"
@@ -58,10 +57,11 @@ probes:
     path: /health
     port: express
 
-jobs:
-  - name: send-notifications
-    schedule: '30 8 * * *'
-    command: ['node', 'dist/server/entryPointTasks', 'sendNotifications']
+jobs: []
+# Example
+#  - name: send-something
+#    schedule: '30 8 * * *'
+#    command: ['node', 'dist/server/entryPointTasks', 'sendSomething']
 
 resources: {}
 

@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: 143694936311.dkr.ecr.us-west-2.amazonaws.com/demo-prod #@TODO: move to var

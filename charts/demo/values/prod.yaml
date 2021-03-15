@@ -14,15 +14,12 @@ config:
 
 secrets:
   databaseUrl: "postgres://test:pass@dbX.us-west-2.rds.amazonaws.com:5432/test" #@TODO: move to var
-  sendgridApiKey: ""
   secretToken: "1Ny7ue7EZYKzjQAtDJLvAJ8zYL6KkQpsjZHZyabZ"
-  twilioAuthToken: ""
 
 resources:
   requests:
     cpu: 100m
-    memory: 1Gi
-
+    memory: 512Mi
 
 ingress:
   enabled: true

@@ -3,16 +3,9 @@ FROM node:14.15.1-alpine
 # Required build args to populate in FE - remove
 ARG site_domain
 ARG api_domain
-ARG intercom_id
-ARG gtm_id
-
-RUN test -n "$site_domain"
-#RUN test -n "$api_domain"
 
 ENV SITE_DOMAIN=$site_domain
 ENV API_DOMAIN=$api_domain
-ENV INTERCOM_ID=$intercom_id
-ENV GTM_ID=$gtm_id
 # ---------
 
 

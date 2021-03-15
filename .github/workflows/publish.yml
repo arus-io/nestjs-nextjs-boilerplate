@@ -20,7 +20,6 @@ jobs:
           echo "IMAGE_TAG=${{ github.sha }}-prod" >> $GITHUB_ENV
           echo "SITE_DOMAIN=arus.io" >> $GITHUB_ENV
 
-
       - name: Configure AWS credentials - Prod
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -39,6 +38,13 @@ jobs:
           ECR_REPOSITORY: demo-prod #@TODO: move to var
         run: |
           docker build --build-arg site_domain=$SITE_DOMAIN --build-arg api_domain=$SITE_DOMAIN  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+
+      - name: Push image to Amazon ECR
+        id: push-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: demo-prod #@TODO: move to var
+        run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
 

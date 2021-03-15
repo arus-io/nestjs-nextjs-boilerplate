@@ -6,14 +6,9 @@ image:
 
 config:
   envName: "prod"
-  s3Bucket: "backend-prod" #@TODO: move to var
-  s3Region: "us-west-2"
-  s3AccessKey: "123456" #@TODO: move to var
-  smsClient: 'twilio'
-  twilioAccountSid: ''
-  emailSupport: "Backend Support <test@backend.com>" #@TODO: move to var
-  emailFrom: "Backend <test@backend.com>" #@TODO: move to var
-  siteDomain: "backend.com" #@TODO: move to var
+  emailSupport: "Demo Support <demo@arus.io>"
+  emailFrom: "Demo <demo@arus.io>"
+  siteDomain: "arus.io"
   sentryEnvironment: "prod"
   adminTwoFactor: "true"
 

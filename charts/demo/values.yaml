@@ -22,19 +22,16 @@ redisService:
 config:
   serverPort: 3000
   envName: none
-  s3Bucket: ""
-  s3Region: ""
-  s3AccessKey: ""
   emailSupport: ""
   emailFrom: ""
   emailWhitelist: ""
+  emailClient: none
   siteDomain: ""
   smsClient: none
   twilioAccountSid: ""
   docsClient: "gdrive"
   gdriveOutputFolder: ""
-  sentryServerDsn: "https://bcc8ddb3a97b42d59dcb3d15e81ddaf5@o448546.ingest.sentry.io/5430058"
-  sentryEnvironment: ""
+  sentryServerDsn: ""
   adminTwoFactor: "false"
 
 secrets:
@@ -42,7 +39,7 @@ secrets:
   sendgridApiKey: ""
   s3SecretKey: ""
   secretToken: ""
-  redisUrl: "redis://backend-redis:6379"
+  redisUrl: "redis://demo-redis:6379"
   twilioAuthToken: ""
 
 ingress:

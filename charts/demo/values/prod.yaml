@@ -40,5 +40,5 @@ ingress:
     alb.ingress.kubernetes.io/tags: Environment=prod,Project=Arus,Name=demo
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=14400
     # the next attributes are required for soc2 - but I had to apply them manually (on an existing ingress)
-    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true,access_logs.s3.enabled=true,access_logs.s3.bucket=eks-ingress-access-log,deletion_protection.enabled=true
+    alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true
     kubernetes.io/ingress.class: alb

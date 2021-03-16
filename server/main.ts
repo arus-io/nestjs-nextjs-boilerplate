@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/node';
 import path from 'path';
 
 import { AppModule } from './modules/app.module';
+import initializeNextApp from './old-code-integration';
 
 const port = parseInt(process.env.PORT, 10) || 3000;
 const helmet = require('helmet');
@@ -20,6 +21,7 @@ import { LoggerInterceptor } from './modules/infra/logger/logger.interceptor';
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
+  await initializeNextApp();
 
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     // logger: false,

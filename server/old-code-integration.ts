@@ -26,6 +26,7 @@ async function getApp() {
     console.log('NOT running FE - FOR DEV ONLY ATM');
     return;
   }
+  console.log('nextApp prepare')
   nextApp = next({ dev, dir: './client' });
   await nextApp.prepare();
 }

@@ -61,7 +61,7 @@ jobs: []
 # Example
 #  - name: send-something
 #    schedule: '30 8 * * *'
-#    command: ['node', 'dist/server/entryPointTasks', 'sendSomething']
+#    command: ['node', 'dist/entryPointTasks', 'sendSomething']
 
 resources: {}
 

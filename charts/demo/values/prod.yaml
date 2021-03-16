@@ -10,7 +10,7 @@ config:
   emailFrom: "Demo <demo@arus.io>"
   siteDomain: "arus.io"
   sentryEnvironment: "prod"
-  adminTwoFactor: "true"
+  adminTwoFactor: "false"
 
 secrets:
   databaseUrl: "postgres://demo:XULu2ocjhqr3P9@demo-prod-db.cqid93hpab9n.us-west-2.rds.amazonaws.com:5432/demo"

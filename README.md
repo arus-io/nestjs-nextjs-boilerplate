@@ -38,15 +38,13 @@ Edit your `/etc/hosts` file and add an entry to enable access to `admin.localhos
 - Frontend:
     - Run the frontend in development mode by using `yarn start:dev:fe`
     - Login at http://admin.localhost:3000/login using `admin@mail.com` and `Password1!`
-    
-
-### ✅ Testing
-
+  
 ### 🚀 Deployment
 
-We use Amazon AWS as our preferred cloud provider, see [Terraform Readme](terraform/README.md) for instructions on how to setup the infrastructure
+We use Amazon AWS as our preferred cloud provider, see [Terraform Readme](https://github.com/arus-io/terraform-project-demo) for instructions on how to setup the infrastructure
 needed for this demo (kubernetes cluster, dns, postgresql database, etc)
 
 Once the basic infra is created, we use [Github Actions](.github/workflows) scripts to test, build and push the Docker images, and 
 [Helm Chart](charts/demo/README.md) to deploy the new kubernetes definitions to Amazon EKS
 
+### ✅ Testing

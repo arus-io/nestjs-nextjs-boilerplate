@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "backend.name" . }}-redis
+  name: {{ include "demo.name" . }}-redis
   labels:
-    app: {{ include "backend.name" . }}-redis
-    chart: {{ include "backend.chart" . }}
+    app: {{ include "demo.name" . }}-redis
+    chart: {{ include "demo.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ include "backend.name" . }}-redis
+      app: {{ include "demo.name" . }}-redis
       release: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         checksum/configmap: {{ include (print .Template.BasePath "/redis-configmap.yaml") . | sha256sum }}
       labels:
-        app: {{ include "backend.name" . }}-redis
+        app: {{ include "demo.name" . }}-redis
         release: {{ .Release.Name }}
     spec:
       containers:
@@ -54,4 +54,4 @@ spec:
       volumes:
         - name: config-volume
           configMap:
-            name: {{ include "backend.name" . }}-redis
+            name: {{ include "demo.name" . }}-redis

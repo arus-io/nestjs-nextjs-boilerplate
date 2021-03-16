@@ -19,6 +19,7 @@ jobs:
           echo "NAMESPACE_NAME=prod" >> $GITHUB_ENV
           echo "IMAGE_TAG=${{ github.sha }}-prod" >> $GITHUB_ENV
           echo "SITE_DOMAIN=arus.io" >> $GITHUB_ENV
+          echo "ECR_REPOSITORY=demo-prod" >> $GITHUB_ENV
 
       - name: Configure AWS credentials - Prod
         uses: aws-actions/configure-aws-credentials@v1
@@ -35,7 +36,6 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: demo-prod #@TODO: move to var
         run: |
           docker build --build-arg site_domain=$SITE_DOMAIN --build-arg api_domain=$SITE_DOMAIN  -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
 
@@ -43,7 +43,6 @@ jobs:
         id: push-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: demo-prod #@TODO: move to var
         run: |
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
@@ -55,7 +54,6 @@ jobs:
 
       - name: Helm Deploy
         id: helm-deploy
-        #@TODO: move to var
         run: |
           curl https://baltocdn.com/helm/signing.asc | sudo apt-key add -
           sudo apt-get install apt-transport-https --yes

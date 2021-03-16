@@ -3,10 +3,10 @@
 apiVersion: batch/v1beta1
 kind:  CronJob
 metadata:
-  name: {{ include "backend.fullname" $ }}-{{ .name }}
+  name: {{ include "demo.fullname" $ }}-{{ .name }}
   labels:
-    app: {{ include "backend.name" $ }}-{{ .name }}
-    chart: {{ include "backend.chart" $ }}
+    app: {{ include "demo.name" $ }}-{{ .name }}
+    chart: {{ include "demo.chart" $ }}
     release: {{ $.Release.Name }}
     heritage: {{ $.Release.Service }}
 spec:
@@ -36,7 +36,7 @@ spec:
                 value: {{ .name }}
               envFrom:
               - configMapRef:
-                  name: {{ template "backend.fullname" $ }}-config
+                  name: {{ template "demo.fullname" $ }}-config
               - secretRef:
-                  name: {{ template "backend.fullname" $ }}-secrets
+                  name: {{ template "demo.fullname" $ }}-secrets
 {{- end }}

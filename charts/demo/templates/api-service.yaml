@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "backend.fullname" . }}-api
+  name: {{ include "demo.fullname" . }}-api
   labels:
-    app: {{ include "backend.name" . }}-api
-    chart: {{ include "backend.chart" . }}
+    app: {{ include "demo.name" . }}-api
+    chart: {{ include "demo.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -15,5 +15,5 @@ spec:
       protocol: TCP
       name: express
   selector:
-    app: {{ include "backend.name" . }}-api
+    app: {{ include "demo.name" . }}-api
     release: {{ .Release.Name }}

@@ -25,4 +25,4 @@ ENV NEXT_TELEMETRY_DISABLED=1
 RUN yarn build
 
 # Running the app
-CMD [ "node", "dist/server/main" ]
+CMD [ "node", "dist/main" ]

@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: 143694936311.dkr.ecr.us-west-2.amazonaws.com/demo-prod #@TODO: move to var
+  repository: 143694936311.dkr.ecr.us-west-2.amazonaws.com/demo-prod
   tag: prod
 
 config:
@@ -13,7 +13,7 @@ config:
   adminTwoFactor: "true"
 
 secrets:
-  databaseUrl: "postgres://test:pass@dbX.us-west-2.rds.amazonaws.com:5432/test" #@TODO: move to var
+  databaseUrl: "postgres://demo:XULu2ocjhqr3P9@demo-prod-db.cqid93hpab9n.us-west-2.rds.amazonaws.com:5432/demo"
   sendgridApiKey: "123"
   secretToken: "1Ny7ue7EZYKzjQAtDJLvAJ8zYL6KkQpsjZHZyabZ"
   twilioAuthToken: "123"
@@ -37,7 +37,7 @@ ingress:
     alb.ingress.kubernetes.io/scheme: internet-facing
     #alb.ingress.kubernetes.io/security-groups: sg-03b99f53927bb0443
     alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
-    alb.ingress.kubernetes.io/tags: Environment=prod,Project=Arus,Name=backend #@TODO: move to var
+    alb.ingress.kubernetes.io/tags: Environment=prod,Project=Arus,Name=demo #@TODO: move to var
     alb.ingress.kubernetes.io/target-group-attributes: stickiness.enabled=true,stickiness.lb_cookie.duration_seconds=14400
     # the next attributes are required for soc2 - but I had to apply them manually (on an existing ingress)
     alb.ingress.kubernetes.io/load-balancer-attributes: routing.http.drop_invalid_header_fields.enabled=true,access_logs.s3.enabled=true,access_logs.s3.bucket=eks-ingress-access-log,deletion_protection.enabled=true

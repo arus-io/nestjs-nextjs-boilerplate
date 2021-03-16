@@ -1,17 +1,17 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "backend.fullname" . }}-api
+  name: {{ include "demo.fullname" . }}-api
   labels:
-    app: {{ include "backend.name" . }}-api
-    chart: {{ include "backend.chart" . }}
+    app: {{ include "demo.name" . }}-api
+    chart: {{ include "demo.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "backend.name" . }}-api
+      app: {{ include "demo.name" . }}-api
       release: {{ .Release.Name }}
   template:
     metadata:
@@ -19,7 +19,7 @@ spec:
         checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum }}
       labels:
-        app: {{ include "backend.name" . }}-api
+        app: {{ include "demo.name" . }}-api
         release: {{ .Release.Name }}
     spec:
       containers:
@@ -32,9 +32,9 @@ spec:
               value: api
           envFrom:
             - configMapRef:
-                name: {{ template "backend.fullname" . }}-config
+                name: {{ template "demo.fullname" . }}-config
             - secretRef:
-                name: {{ template "backend.fullname" . }}-secrets
+                name: {{ template "demo.fullname" . }}-secrets
           ports:
             - name: express
               containerPort: {{ .Values.config.serverPort }}

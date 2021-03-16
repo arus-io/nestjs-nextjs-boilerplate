@@ -62,7 +62,7 @@ async function bootstrap() {
   app.enableCors({
     exposedHeaders: ['AuthToken'],
   });
-  app.useStaticAssets(path.join(__dirname, '..', 'static'));
+  app.useStaticAssets(path.join(__dirname, '.', 'static'));
 
   // app.setGlobalPrefix('v2');
   await app.listen(port, () => {

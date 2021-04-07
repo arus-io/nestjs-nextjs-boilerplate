@@ -8,9 +8,9 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_PASSWORD: 'boilerplate'
-      POSTGRES_USER: 'boilerplate'
-      POSTGRES_DB: 'boilerplate'
+      POSTGRES_PASSWORD: 'demo'
+      POSTGRES_USER: 'demo'
+      POSTGRES_DB: 'demo'
 
   adminer:
     container_name: demo-adminer

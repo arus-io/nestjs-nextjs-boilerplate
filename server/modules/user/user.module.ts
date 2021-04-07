@@ -12,7 +12,7 @@ import { UserController } from './user.controller';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { InfraModule } from '../infra/infra.module';
-import { ConfigService } from '@nestjs/config';
+import { AuthResolver } from './auth.resolver';
 
 @Module({
   imports: [
@@ -30,6 +30,7 @@ import { ConfigService } from '@nestjs/config';
     },
     UserService,
     UserResolver,
+    AuthResolver
   ],
   controllers: [UserController, AuthController],
   exports: [AuthService, UserService, MessageService],

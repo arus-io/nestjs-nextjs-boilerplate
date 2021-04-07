@@ -11,6 +11,7 @@ export interface INavItem {
   href: string;
   iconName: IconName;
   exact?: boolean;
+  superuser: boolean;
 }
 interface INavItemsProps {
   navItems: INavItem[];

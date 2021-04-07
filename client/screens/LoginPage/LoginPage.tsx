@@ -2,7 +2,6 @@ import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import { doLoginAction } from '../../_core/api';
 import Button from '../../components/Button';
 import FormError from '../../components/Forms/Error';
 import Input from '../../components/Forms/Input';

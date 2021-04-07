@@ -18,7 +18,6 @@ import {AuthResult, LoginMutationResult, useLoginMutation} from "../../_gen/grap
 import {saveTokenClient} from "../../utils/cookies";
 
 interface LoginProps {
-  login: (p: any) => Promise<LoginMutationResult>;
   getMe: (any) => Promise<any>;
 }
 
@@ -131,7 +130,6 @@ const Login = ({ getMe }: LoginProps) => {
 };
 
 const LoginPage = connect(null, {
-  login: doLoginAction,
   getMe: getMeAction,
 })(Login);
 

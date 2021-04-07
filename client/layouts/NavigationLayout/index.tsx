@@ -7,6 +7,8 @@ import Banner from './Banner';
 import { BannerContext, BannerContextProvider } from './bannerContext';
 import styles from './NavigationLayout.module.scss';
 import MainNavigation from '../../components/MainNavigation';
+import VerticalNavigationLayout from "../VerticalNavigationLayout";
+import {INavItem} from "../VerticalNavigationLayout/navigation";
 
 const NavigationLayout: React.FunctionComponent = ({ children }) => (
   <>
@@ -44,6 +46,31 @@ NavigationLayoutContent.propTypes = {
   children: PropTypes.node,
 };
 
-export const getNavigationLayout = (page) => <NavigationLayout>{page}</NavigationLayout>;
+
+const navItems: INavItem[] = [
+  {
+    key: 'company',
+    label: 'Company Home',
+    href: '/',
+    iconName: 'Home',
+    exact: true,
+  },
+  {
+    key: 'home',
+    label: 'Admin Home',
+    href: '/admin',
+    iconName: 'Home',
+    exact: true,
+  },
+  {
+    key: 'messages',
+    label: 'Admin Messages',
+    href: '/admin/messages',
+    iconName: 'MessageSquare',
+  },
+
+];
+
+export const getNavigationLayout = (page) => <VerticalNavigationLayout navItems={navItems}>{page}</VerticalNavigationLayout>;
 
 export default NavigationLayout;

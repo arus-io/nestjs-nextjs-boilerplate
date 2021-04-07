@@ -9,12 +9,6 @@ export const getApiDataAction = (url, api = '/api') => async (dispatch, getState
   return r.payload;
 };
 
-export const doLoginAction = (body) => async (dispatch, getState) => {
-  const r = await fetchApi({ getState, dispatch }, '/v2/auth/login', { body, method: 'POST' });
-  saveTokenClient(r.payload.token);
-  return r.payload;
-};
-
 export const logoutAction = () => async (dispatch, getState) => {
   await fetchApi({ getState, dispatch }, '/v2/auth/logout', { method: 'POST' });
   saveTokenClient('');

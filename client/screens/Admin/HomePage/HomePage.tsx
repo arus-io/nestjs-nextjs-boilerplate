@@ -7,7 +7,7 @@ const HomePage = ({ user }: IWithUserProps) => {
   return (
     <>
       <div className={styles.welcomeBanner}>
-        <div className={styles.bannerHeader}>{`Hello ${user.firstName}`}</div>
+        <div className={styles.bannerHeader}>{`Hello Admin ${user.firstName}`}</div>
         <div className={styles.bannerLabel}>Welcome back to Boilerplate App!</div>
       </div>
     </>

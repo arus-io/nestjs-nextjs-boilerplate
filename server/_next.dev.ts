@@ -23,11 +23,7 @@ app.prepare().then(() => {
     const parsedUrl = parse(req.url, true);
     const { pathname, query } = parsedUrl;
 
-    if (req.subdomain === 'admin') {
-      app.render(req, res, `/admin${pathname === '/' ? '' : pathname}`, query);
-    } else {
       handle(req, res, parsedUrl);
-    }
   });
   server.listen(port, (err) => {
     if (err) throw err;

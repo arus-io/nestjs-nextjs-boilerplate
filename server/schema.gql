@@ -2,6 +2,15 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type AuthResult {
+  company: Company
+  existingPhone: String
+  has2faVerified: Boolean!
+  needs2fa: Boolean!
+  token: String!
+  type: String
+}
+
 type Company {
   id: Int!
   logo: String
@@ -34,6 +43,10 @@ type Message {
   sentDate: DateTime!
   subject: String!
   to: String!
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthResult!
 }
 
 type Query {

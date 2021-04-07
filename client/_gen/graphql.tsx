@@ -15,6 +15,16 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type AuthResult = {
+  __typename?: 'AuthResult';
+  company?: Maybe<Company>;
+  existingPhone?: Maybe<Scalars['String']>;
+  has2faVerified: Scalars['Boolean'];
+  needs2fa: Scalars['Boolean'];
+  token: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
+};
+
 export type Company = {
   __typename?: 'Company';
   id: Scalars['Int'];
@@ -48,6 +58,17 @@ export type Message = {
   to: Scalars['String'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  login: AuthResult;
+};
+
+
+export type MutationLoginArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
   companies: Array<Company>;
@@ -64,7 +85,7 @@ export type QueryGlobalSearchArgs = {
 
 export type User = {
   __typename?: 'User';
-  company: Company;
+  company?: Maybe<Company>;
   email: Scalars['String'];
   firstName: Scalars['String'];
   id: Scalars['Int'];
@@ -100,6 +121,20 @@ export type MessagesQuery = (
   )> }
 );
 
+export type LoginMutationVariables = Exact<{
+  email: Scalars['String'];
+  password: Scalars['String'];
+}>;
+
+
+export type LoginMutation = (
+  { __typename?: 'Mutation' }
+  & { login: (
+    { __typename?: 'AuthResult' }
+    & Pick<AuthResult, 'token' | 'needs2fa' | 'has2faVerified' | 'type' | 'existingPhone'>
+  ) }
+);
+
 export type MyCompanyQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -107,10 +142,10 @@ export type MyCompanyQuery = (
   { __typename?: 'Query' }
   & { me: (
     { __typename?: 'User' }
-    & { company: (
+    & { company?: Maybe<(
       { __typename?: 'Company' }
       & Pick<Company, 'id' | 'name' | 'subdomain' | 'supportEmail' | 'logo' | 'twoFactorEnabled'>
-    ) }
+    )> }
   ) }
 );
 
@@ -193,6 +228,43 @@ export function useMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type MessagesQueryHookResult = ReturnType<typeof useMessagesQuery>;
 export type MessagesLazyQueryHookResult = ReturnType<typeof useMessagesLazyQuery>;
 export type MessagesQueryResult = Apollo.QueryResult<MessagesQuery, MessagesQueryVariables>;
+export const LoginDocument = gql`
+    mutation login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
+    token
+    needs2fa
+    has2faVerified
+    type
+    existingPhone
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const MyCompanyDocument = gql`
     query myCompany {
   me {

@@ -1,9 +1,8 @@
-import { Info, Parent, Query, ResolveField, Resolver, Args } from '@nestjs/graphql';
+import {Info, Parent, Query, ResolveField, Resolver, Args, Mutation, Context} from '@nestjs/graphql';
 
 import { CurrentUser } from './lib/auth.guard';
-import { User as UserEntity } from './models/user.entity';
 import { UserService } from './user.service';
-import { GlobalSearchResult, User } from './user.vm';
+import {GlobalSearchResult, User} from './user.vm';
 import { Protected } from './lib/auth.decorator';
 
 @Resolver((of) => User)
@@ -25,5 +24,4 @@ export class UserResolver {
   async me(@CurrentUser() user, @Info() info) {
     return this.userService.findOne(user.id);
   }
-
 }

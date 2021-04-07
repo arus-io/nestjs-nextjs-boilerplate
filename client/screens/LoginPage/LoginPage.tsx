@@ -14,15 +14,11 @@ import { fieldRequired, validEmail } from '../../utils/validators';
 import styles from './LoginPage.module.scss';
 import TwoFactorPage from './TwoFactorPage';
 import TwoFactorVerifyPage from './TwoFactorVerifyPage';
+import {AuthResult, LoginMutationResult, useLoginMutation} from "../../_gen/graphql";
+import {saveTokenClient} from "../../utils/cookies";
 
-interface LoginResponse {
-  needs2fa: boolean;
-  has2faVerified: boolean;
-  type: 'sms' | 'totp';
-  existingPhone: string;
-}
 interface LoginProps {
-  login: (p: any) => Promise<LoginResponse>;
+  login: (p: any) => Promise<LoginMutationResult>;
   getMe: (any) => Promise<any>;
 }
 
@@ -31,10 +27,12 @@ enum LOGIN_PHASE {
   NEEDS_SECOND_FACTOR,
   NEEDS_CONFIGURE_2FA,
 }
-const Login = ({ login, getMe }: LoginProps) => {
+const Login = ({ getMe }: LoginProps) => {
   const [loginError, setLoginError] = useState('');
   const [loginPhase, setLoginPhase] = useState(LOGIN_PHASE.NOT_AUTH);
-  const [loginData, setLoginData] = useState<LoginResponse>();
+  const [loginData, setLoginData] = useState<AuthResult>();
+
+  const [loginMutation] = useLoginMutation();
 
   const completeLogin = () => {
     // this completes redux store, and detects we're logged in
@@ -78,14 +76,15 @@ const Login = ({ login, getMe }: LoginProps) => {
           try {
             setLoginError('');
             // This call will set the response token in the store
-            const response = await login(values);
-            setLoginData(response);
-            if (!response.needs2fa) {
+            const { data: { login } } = await loginMutation({ variables: { email: values.email, password:values.password}});
+            setLoginData(login);
+            saveTokenClient(login.token)
+            if (!login.needs2fa) {
               // done
               return completeLogin();
             }
 
-            if (response.has2faVerified) {
+            if (login.has2faVerified) {
               setLoginPhase(LOGIN_PHASE.NEEDS_SECOND_FACTOR);
               // Router.push(`/two-factor-verify?type=${response.type}`);
             } else {

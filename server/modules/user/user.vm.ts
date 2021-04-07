@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import {Field, InputType, Int, ObjectType} from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
 
 import { Company } from '../company/company.vm';
@@ -23,8 +23,8 @@ export class User {
 
   @Field(() => Company, { nullable: true })
   company: Company;
-
 }
+
 
 @ObjectType()
 export class GlobalSearchResult {

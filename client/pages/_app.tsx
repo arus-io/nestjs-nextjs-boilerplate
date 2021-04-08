@@ -1,4 +1,6 @@
 import '../scss/main.scss';
+import 'react-toastify/dist/ReactToastify.css';
+import '../scss/toastify.scss';
 
 import { ApolloProvider } from '@apollo/client';
 import jwt_decode from 'jwt-decode';

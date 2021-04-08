@@ -519,35 +519,35 @@ describe('#Auth', () => {
     });
   });
 
-  describe('change Password', () => {
-    it('should change the password and be able to login', async () => {
-      const newPassword = 'Aa123456!';
-      const res = await request(api)
-        .put('/v2/auth/me/change-password')
-        .set(await getAuthHeaders(app, data.user))
-        .send({ newPassword })
-        .expect(200);
-      expect(res.body).toStrictEqual({ success: true });
+  // describe('change Password', () => {
+  //   // it('should change the password and be able to login', async () => {
+  //   //   const newPassword = 'Aa123456!';
+  //   //   const res = await request(api)
+  //   //     .put('/v2/auth/me/change-password')
+  //   //     .set(await getAuthHeaders(app, data.user))
+  //   //     .send({ newPassword })
+  //   //     .expect(200);
+  //   //   expect(res.body).toStrictEqual({ success: true });
 
-      await request(api)
-        .post('/v2/auth/login')
-        .send({
-          email: data.user.email,
-          password: newPassword,
-        })
-        .expect(200);
-    });
+  //   //   await request(api)
+  //   //     .post('/v2/auth/login')
+  //   //     .send({
+  //   //       email: data.user.email,
+  //   //       password: newPassword,
+  //   //     })
+  //   //     .expect(200);
+  //   // });
 
-    it(' should not allow invalid passwords', async () => {
-      const newPassword = '123';
-      const res = await request(api)
-        .put('/v2/auth/me/change-password')
-        .set(await getAuthHeaders(app, data.user))
-        .send({ newPassword })
-        .expect(400);
-      expect(res.body.message).toEqual(
-        'Password must be minimum 8 characters, must contain an uppercase letter, a lower case letter, at least one number and one special character.',
-      );
-    });
-  });
+  //   // it(' should not allow invalid passwords', async () => {
+  //   //   const newPassword = '123';
+  //   //   const res = await request(api)
+  //   //     .put('/v2/auth/me/change-password')
+  //   //     .set(await getAuthHeaders(app, data.user))
+  //   //     .send({ newPassword })
+  //   //     .expect(400);
+  //   //   expect(res.body.message).toEqual(
+  //   //     'Password must be minimum 8 characters, must contain an uppercase letter, a lower case letter, at least one number and one special character.',
+  //   //   );
+  //   // });
+  // });
 });

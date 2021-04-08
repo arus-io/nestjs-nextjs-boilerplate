@@ -1,10 +1,9 @@
-import { Body, Controller, HttpCode, Post, Req, Request, Put, Get } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, Request, Get } from '@nestjs/common';
 
 import { AppLogger } from '../infra/logger/app.logger';
 import { AuthService } from './auth.service';
 import { Protected } from './lib/auth.decorator';
 import {
-  ChangePasswordDto,
   EnableSMSDto,
   ForgotPasswordDto,
   ImpersonateDto,
@@ -108,13 +107,6 @@ export class AuthController {
       subdomain: (req as any).subdomain,
       companyId: (req as any).companyId,
     });
-  }
-
-  @Put('me/change-password')
-  @HttpCode(200)
-  @Protected()
-  async changePassword(@Req() req, @Body() body: ChangePasswordDto): Promise<any> {
-    return await this.authService.changePassword(req.user, body.newPassword);
   }
 
   @Get('me')

@@ -41,13 +41,6 @@ export const sendWelcomeEmail = (body) => async (dispatch, getState) => {
   return r.payload;
 };
 
-export const updatePassword = (newPassword) => async (dispatch, getState) => {
-  const r = await fetchApi({ getState, dispatch }, '/v2/auth/me/change-password', {
-    body: { newPassword },
-    method: 'PUT',
-  });
-  return r.payload;
-};
 
 export const setNewPassword = ({ email, resetToken, newPassword }) => async (dispatch, getState) => {
   const r = await fetchApi({ getState, dispatch }, '/v2/auth/reset-password', {

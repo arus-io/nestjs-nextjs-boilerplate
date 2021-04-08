@@ -1,0 +1,14 @@
+@import '../constants/colors.scss';
+
+.Toastify__toast--info {
+  background-color: $lightYellow !important;
+}
+.Toastify__toast--success {
+  background-color: $primary !important;
+}
+.Toastify__toast--warning {
+  background-color: $lightRed !important;
+}
+.Toastify__toast--error {
+  background-color: $accentDark !important;
+}

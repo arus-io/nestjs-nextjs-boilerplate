@@ -9,7 +9,11 @@ Main techonologies:
 
 ### 🛠️ Prerequisites
 
+- All environment variables are read using [dotenv](https://www.npmjs.com/package/dotenv). You will need to create `.env` file in project root. Example data for this file can be found in `.env.sample` already located inside root of the project or using the following info:
 
+    ```sh
+    cp .env.sample .env
+    ```
 - Please make sure to have an accessible SQL database instance (Postgresql recommended) and a Redis instance to store cache and sessions. 
   Both can be installed locally running 
   ```
@@ -20,12 +24,6 @@ Edit your `/etc/hosts` file and add an entry to enable access to `admin.localhos
   ```
   127.0.0.1 admin.localhost
   ```
-
-- All environment variables are read using [dotenv](https://www.npmjs.com/package/dotenv). You will need to create `.env` file in project root. Example data for this file can be found in `.env.sample` already located inside root of the project or using the following info:
-
-    ```sh
-    cp .env.sample .env
-    ```
 ---
 
 ### 🚀 Development 

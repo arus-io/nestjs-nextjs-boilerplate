@@ -49,7 +49,3 @@ export class ResetPassworddDto {
   newPassword: string;
 }
 
-export class ChangePasswordDto {
-  @IsNotEmpty({ message: 'Please provide a valid password.' })
-  newPassword: string;
-}

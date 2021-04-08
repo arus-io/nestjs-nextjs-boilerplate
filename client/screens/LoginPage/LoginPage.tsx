@@ -2,7 +2,6 @@ import { Field, Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 
-import { doLoginAction } from '../../_core/api';
 import Button from '../../components/Button';
 import FormError from '../../components/Forms/Error';
 import Input from '../../components/Forms/Input';
@@ -18,7 +17,6 @@ import {AuthResult, LoginMutationResult, useLoginMutation} from "../../_gen/grap
 import {saveTokenClient} from "../../utils/cookies";
 
 interface LoginProps {
-  login: (p: any) => Promise<LoginMutationResult>;
   getMe: (any) => Promise<any>;
 }
 
@@ -131,7 +129,6 @@ const Login = ({ getMe }: LoginProps) => {
 };
 
 const LoginPage = connect(null, {
-  login: doLoginAction,
   getMe: getMeAction,
 })(Login);
 

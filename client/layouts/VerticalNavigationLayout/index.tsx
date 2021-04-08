@@ -10,13 +10,15 @@ import CollapsedIcon from './assets/collapsedIcon.svg';
 import NavItems, { INavItem } from './navigation';
 import PageHeader from './pageHeader';
 import styles from './VerticalNavigationLayout.module.scss';
+import withUser from "./withUser";
 
 interface IProps {
   navItems: INavItem[];
   children: React.ReactNode;
+  user: any;
 }
 
-const VerticalNavigationLayout = ({ children, navItems }: IProps) => {
+const VerticalNavigationLayout = ({ user, children, navItems }: IProps) => {
   const [navigationOpen, setNavigationOpen] = useState<boolean>(false);
 
   // Adding listeners for resize is overkill, just open the menu when component mounts
@@ -44,7 +46,7 @@ const VerticalNavigationLayout = ({ children, navItems }: IProps) => {
             )}
           </div>
           <div className={styles.navItemsContainer}>
-            <NavItems isDrawerOpen={navigationOpen} navItems={navItems} />
+            <NavItems isDrawerOpen={navigationOpen} navItems={navItems.filter(i => !i.superuser || user.superuser)} />
           </div>
         </div>
         <NavLink href="/logout">
@@ -76,4 +78,4 @@ VerticalNavigationLayout.propTypes = {
 
 VerticalNavigationLayout.defaultProps = {};
 
-export default VerticalNavigationLayout;
+export default withUser(VerticalNavigationLayout);

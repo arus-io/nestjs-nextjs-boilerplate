@@ -11,3 +11,13 @@ export const login = gql`
     }
   }
 `;
+
+export const getMe = gql`
+  query me {
+    me {
+      id
+      firstName
+      lastName
+    }
+  }
+`;

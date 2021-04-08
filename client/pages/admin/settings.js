@@ -1,6 +1,6 @@
-import { getAdminLayout } from '../../layouts/AdminLayout';
+import { getFullContentLayout } from '../../layouts/DashboardLayout';
 import AccountSettingsPage from '../../screens/AccountSettingsPage';
 
-AccountSettingsPage.getLayout = getAdminLayout;
+AccountSettingsPage.getLayout = getFullContentLayout;
 
 export default AccountSettingsPage;

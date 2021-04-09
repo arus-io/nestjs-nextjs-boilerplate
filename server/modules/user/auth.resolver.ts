@@ -2,6 +2,7 @@ import {Resolver, Args, Mutation, Context} from '@nestjs/graphql';
 
 import {AuthService} from "./auth.service";
 import {AuthResult, ChangePasswordResult} from "./auth.vm";
+import { Protected } from './lib/auth.decorator';
 
 @Resolver((of) => AuthResult)
 export class AuthResolver {
@@ -16,6 +17,7 @@ export class AuthResolver {
   }
 
   @Mutation((returns) => ChangePasswordResult)
+  @Protected()
   async changePassword(@Args('newPassword') newPassword: string, @Context() c) {
     return await this.authService.changePassword(c.req.user, newPassword);
   }

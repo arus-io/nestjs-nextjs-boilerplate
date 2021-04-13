@@ -25,14 +25,22 @@ describe('gql#auth', () => {
   });
 
     it('should change the password', async () => {
-      const newPassword = 'P4ssw0rd2!';
-      const { errors, data } = await t.query(`
+      const resChangePassword = await t.query(`
       mutation {
         changePassword(newPassword: "P4ssw0rd2!"){
           success
         }
       }`, ds.admin);
-      expect(data.changePassword.success).toStrictEqual(true);
-      expect(errors).toBeUndefined();
+      expect(resChangePassword.data.changePassword.success).toStrictEqual(true);
+      expect(resChangePassword.errors).toBeUndefined();
+
+      const resLogin = await t.query(`
+        mutation {
+          login(email: "admin@a.com", password: "P4ssw0rd2!"){
+            token
+            needs2fa
+          }
+        }`, ds.admin);
+      expect(resLogin.data.login.company).toStrictEqual(true);
     });
 });

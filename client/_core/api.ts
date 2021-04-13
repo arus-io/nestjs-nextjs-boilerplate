@@ -42,14 +42,6 @@ export const sendWelcomeEmail = (body) => async (dispatch, getState) => {
 };
 
 
-export const setNewPassword = ({ email, resetToken, newPassword }) => async (dispatch, getState) => {
-  const r = await fetchApi({ getState, dispatch }, '/v2/auth/reset-password', {
-    body: { email, resetToken, newPassword },
-    method: 'POST',
-  });
-  return r.payload;
-};
-
 // 2FA
 export const updateCompanyForceTwoFactorAction = (twoFactorEnabled) => async (dispatch, getState) => {
   const r = await fetchApi({ getState, dispatch }, `/v2/companies/two-factor`, {

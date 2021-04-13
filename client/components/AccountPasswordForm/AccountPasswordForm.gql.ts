@@ -7,3 +7,11 @@ export const changePassword = gql`
     }
   }
 `;
+
+export const resetPassword = gql`
+  mutation resetPassword($email: String!, $resetToken: String!, $newPassword: String!) {
+    resetPassword(email: $email, resetToken: $resetToken, newPassword: $newPassword ) {
+      success
+    }
+  }
+`;

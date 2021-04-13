@@ -5,28 +5,48 @@ import styles from './AccountPasswordForm.module.scss';
 import FormError from '../Forms/Error';
 import { fieldRequired, validPassword } from '../../utils/validators';
 import { Form, Formik, Field } from 'formik';
-import { useChangePasswordMutation } from '../../_gen/graphql';
+import { useChangePasswordMutation, useResetPasswordMutation } from '../../_gen/graphql';
 import { toast } from 'react-toastify';
 
-export const AccountPasswordForm = () => {
+interface Props {
+  email?: string,
+  resetToken?: string
+}
+
+const AccountPasswordForm = ({email, resetToken} : Props) => {
   const [changePasswordMutation] = useChangePasswordMutation();
+  const [resetPasswordMutation] = useResetPasswordMutation();
   const [error, setError] = useState();
 
-  const submitChangePassword = async (values, { setSubmitting, resetForm }) => {
+  const submit = async (values, { setSubmitting, resetForm }) => {
     const { newPassword } = values;
+    let message = '';
     try {
-      await changePasswordMutation({
-        variables: {
-          newPassword
-        }
-      });
+      if (resetToken) {
+        await resetPasswordMutation({
+          variables: {
+            email,
+            resetToken,
+            newPassword
+          }
+        })
+        message = 'Email was sent!';
+      } else {
+        await changePasswordMutation({
+          variables: {
+            newPassword
+          }
+        });
+        message = 'Password updated!';
+      }
       resetForm();
-      toast.success('Password updated!');
+      toast.success(message);
     } catch (e) {
       setError(e.message);
     }
     setSubmitting(false);
   }
+
 
   return (
     <Formik
@@ -42,7 +62,7 @@ export const AccountPasswordForm = () => {
         }
         return errors;
       }}
-      onSubmit={submitChangePassword}
+      onSubmit={submit}
     >
       {({ isSubmitting, isValid, values }) => (
         <Form>

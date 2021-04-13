@@ -33,3 +33,8 @@ export class LoginArgs {
   password: string;
 }
 
+@ObjectType()
+export class ChangePasswordResult {
+  @Field()
+  success: boolean;
+}

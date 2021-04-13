@@ -40,7 +40,7 @@ export class ForgotPasswordDto {
   email: string;
 }
 
-export class ResetPassworddDto {
+export class ResetPasswordDto {
   @IsEmail()
   email: string;
   @IsNotEmpty()
@@ -49,7 +49,3 @@ export class ResetPassworddDto {
   newPassword: string;
 }
 
-export class ChangePasswordDto {
-  @IsNotEmpty({ message: 'Please provide a valid password.' })
-  newPassword: string;
-}

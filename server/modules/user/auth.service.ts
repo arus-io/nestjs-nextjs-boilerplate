@@ -10,7 +10,7 @@ import { MessageService } from '../messages/message.service';
 import { ILoginResponse } from './auth.controller';
 import { AuthUtils } from './lib/authUtils';
 import { User } from './models/user.entity';
-import { ForgotPasswordDto, ImpersonateDto, ResetPassworddDto, type2fa, Verify2faDto } from './user.dto';
+import { ForgotPasswordDto, ImpersonateDto, ResetPasswordDto, type2fa, Verify2faDto } from './user.dto';
 import { ConfigService } from '@nestjs/config';
 import { Company } from '../company/models/company.entity';
 import { logger } from '../infra/logger';
@@ -54,12 +54,12 @@ export class AuthService {
     const { user, company } = await this.getBasicAuthDataByEmail(isAdmin ? 0 : companyId, email);
 
     if (!user) {
-      throw new BadRequestException('Invalid user or password.');
+      throw new BadRequestException(`Invalid user. ${email} ${companyId} ${subdomain}`);
     }
 
     const validPassword = await AuthUtils.comparePassword(password, user.password);
     if (!validPassword) {
-      throw new BadRequestException('Invalid user or password.');
+      throw new BadRequestException('Invalid password.');
     }
 
     const needs2fa = this.twoFactorEnabled(company);
@@ -269,7 +269,7 @@ export class AuthService {
       userQ
         .innerJoinAndSelect('u.company', 'company')
     }
-    const user: User = await userQ.where(where[0], where[1]).getOne();
+    const user: User = await userQ.andWhere(where[0], where[1]).getOne();
     return { user, company: user?.company };
   }
 
@@ -347,7 +347,7 @@ export class AuthService {
   }
 
   public async changePasswordWithToken(
-    { email, resetToken, newPassword }: ResetPassworddDto,
+    { email, resetToken, newPassword } : ResetPasswordDto,
     { companyId, subdomain },
   ) {
     const isAdmin = subdomain === 'admin';
@@ -371,7 +371,7 @@ export class AuthService {
     return { success: true };
   }
 
-  public async changePassword(user: User, newPassword) {
+  public async changePassword(user: User, newPassword: string) {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,}$/;
     if (!newPassword.match(passwordRegex)) {
       throw new BadRequestException(

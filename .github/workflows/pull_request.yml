@@ -27,8 +27,8 @@ jobs:
         with:
           postgresql version: '11'
           postgresql db: test
-          postgresql user: test
-          postgresql password: test
+          postgresql user: demo
+          postgresql password: demo
       - uses: zhulik/redis-action@v1.0.0
       - run: yarn
         if: |

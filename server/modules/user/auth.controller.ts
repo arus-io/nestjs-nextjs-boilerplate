@@ -1,15 +1,12 @@
-import { Body, Controller, HttpCode, Post, Req, Request, Put, Get } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Req, Request, Get } from '@nestjs/common';
 
 import { AppLogger } from '../infra/logger/app.logger';
 import { AuthService } from './auth.service';
 import { Protected } from './lib/auth.decorator';
 import {
-  ChangePasswordDto,
   EnableSMSDto,
-  ForgotPasswordDto,
   ImpersonateDto,
   LoginDto,
-  ResetPassworddDto,
   type2fa,
   Verify2faDto,
 } from './user.dto';
@@ -27,15 +24,6 @@ export interface ILoginResponse {
 export class AuthController {
   private logContext = 'AuthController';
   constructor(private readonly authService: AuthService, private readonly userService: UserService, private logger: AppLogger) {}
-
-  @Post('login')
-  @HttpCode(200)
-  async login(@Body() body: LoginDto, @Req() req: Request): Promise<ILoginResponse> {
-    return await this.authService.login(body, {
-      subdomain: (req as any).subdomain,
-      companyId: (req as any).companyId,
-    });
-  }
 
   @Post('logout')
   @HttpCode(200)
@@ -92,30 +80,6 @@ export class AuthController {
     return await this.authService.impersonate(body);
   }
 
-  @Post('forgot-password')
-  @HttpCode(200)
-  async forgotPassword(@Req() req: Request, @Body() body: ForgotPasswordDto): Promise<any> {
-    return await this.authService.forgotPassword(body, {
-      subdomain: (req as any).subdomain,
-      companyId: (req as any).companyId,
-    });
-  }
-
-  @Post('reset-password')
-  @HttpCode(200)
-  async resetPassword(@Req() req: Request, @Body() body: ResetPassworddDto): Promise<any> {
-    return await this.authService.changePasswordWithToken(body, {
-      subdomain: (req as any).subdomain,
-      companyId: (req as any).companyId,
-    });
-  }
-
-  @Put('me/change-password')
-  @HttpCode(200)
-  @Protected()
-  async changePassword(@Req() req, @Body() body: ChangePasswordDto): Promise<any> {
-    return await this.authService.changePassword(req.user, body.newPassword);
-  }
 
   @Get('me')
   @HttpCode(200)

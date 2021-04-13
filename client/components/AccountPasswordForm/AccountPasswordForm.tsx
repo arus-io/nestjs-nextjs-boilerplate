@@ -1,15 +1,53 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import compose from 'recompose/compose';
 import Button from '../Button';
 import Input from '../Forms/Input';
 import styles from './AccountPasswordForm.module.scss';
 import FormError from '../Forms/Error';
 import { fieldRequired, validPassword } from '../../utils/validators';
 import { Form, Formik, Field } from 'formik';
-import { updatePassword } from '../../_core/api';
+import { useChangePasswordMutation, useResetPasswordMutation } from '../../_gen/graphql';
+import { toast } from 'react-toastify';
 
-export const PasswordForm = ({ handler, error }: any) => {
+interface Props {
+  email?: string,
+  resetToken?: string
+}
+
+const AccountPasswordForm = ({email, resetToken} : Props) => {
+  const [changePasswordMutation] = useChangePasswordMutation();
+  const [resetPasswordMutation] = useResetPasswordMutation();
+  const [error, setError] = useState();
+
+  const submit = async (values, { setSubmitting, resetForm }) => {
+    const { newPassword } = values;
+    let message = '';
+    try {
+      if (resetToken) {
+        await resetPasswordMutation({
+          variables: {
+            email,
+            resetToken,
+            newPassword
+          }
+        })
+        message = 'Email was sent!';
+      } else {
+        await changePasswordMutation({
+          variables: {
+            newPassword
+          }
+        });
+        message = 'Password updated!';
+      }
+      resetForm();
+      toast.success(message);
+    } catch (e) {
+      setError(e.message);
+    }
+    setSubmitting(false);
+  }
+
+
   return (
     <Formik
       initialValues={{ newPassword: '', newPasswordConfirm: '' }}
@@ -24,15 +62,7 @@ export const PasswordForm = ({ handler, error }: any) => {
         }
         return errors;
       }}
-      onSubmit={async (values, { setSubmitting, resetForm }) => {
-        try {
-          await handler(values);
-          resetForm();
-        } catch (e) {
-          // console.log(e);
-        }
-        setSubmitting(false);
-      }}
+      onSubmit={submit}
     >
       {({ isSubmitting, isValid, values }) => (
         <Form>
@@ -80,17 +110,4 @@ export const PasswordForm = ({ handler, error }: any) => {
   );
 };
 
-const AccountPasswordForm = ({ updatePassword }: any) => {
-  const [error, setError] = useState('');
-  const handler = async (values) => {
-    try {
-      await updatePassword(values.newPassword);
-    } catch (e) {
-      setError(e.message);
-      throw e;
-    }
-  };
-  return <PasswordForm handler={handler} error={error} />;
-};
-
-export default compose(connect(null, { updatePassword }))(AccountPasswordForm);
+export default AccountPasswordForm;

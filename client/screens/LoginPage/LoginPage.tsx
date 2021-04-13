@@ -13,7 +13,7 @@ import { fieldRequired, validEmail } from '../../utils/validators';
 import styles from './LoginPage.module.scss';
 import TwoFactorPage from './TwoFactorPage';
 import TwoFactorVerifyPage from './TwoFactorVerifyPage';
-import {AuthResult, LoginMutationResult, useLoginMutation} from "../../_gen/graphql";
+import {AuthResult, useLoginMutation} from "../../_gen/graphql";
 import {saveTokenClient} from "../../utils/cookies";
 
 interface LoginProps {
@@ -50,7 +50,7 @@ const Login = ({ getMe }: LoginProps) => {
     <AuthLayoutWithCard
       title="Login"
       footer={
-        <Link href="/reset-password">
+        <Link href="/forgot-password">
           <a>Forgot password?</a>
         </Link>
       }

@@ -11,6 +11,10 @@ type AuthResult {
   type: String
 }
 
+type ChangePasswordResult {
+  success: Boolean!
+}
+
 type Company {
   id: Int!
   logo: String
@@ -46,7 +50,10 @@ type Message {
 }
 
 type Mutation {
+  changePassword(newPassword: String!): ChangePasswordResult!
+  forgotPassword(email: String!): ChangePasswordResult!
   login(email: String!, password: String!): AuthResult!
+  resetPassword(email: String!, newPassword: String!, resetToken: String!): ChangePasswordResult!
 }
 
 type Query {
